@@ -1,0 +1,3 @@
+<antlib>
+    <taskdef classname="com.kloudtek.buildmagic.bootstrap.BootstrapInitTask" name='init'/>
+</antlib>

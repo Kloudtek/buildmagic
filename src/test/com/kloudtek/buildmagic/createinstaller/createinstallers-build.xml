@@ -1,0 +1,117 @@
+<!--
+  ~ Copyright (c) $today.year.jGuild International Ltd
+  -->
+
+<project name="PackageDeb Tests">
+    <taskdef name="deb" classname="com.kloudtek.buildmagic.createinstaller.deb.CreateDebTask"/>
+
+    <macrodef name="setup-dpkg">
+        <attribute name="installdir"/>
+        <sequential>
+            <mkdir dir="@{installdir}/var/lib/dpkg/updates"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/triggers"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/info"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/parts"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/tmp.ci"/>
+            <touch file="@{installdir}/var/lib/dpkg/available"/>
+            <touch file="@{installdir}/var/lib/dpkg/status"/>
+            <touch file="@{installdir}/var/lib/dpkg/triggers/File"/>
+            <touch file="@{installdir}/var/lib/dpkg/triggers/Unincorp"/>
+            <touch file="@{installdir}/var/lib/dpkg/diversions"/>
+            <touch file="@{installdir}/var/lib/dpkg/statoverride"/>
+            <echo file="@{installdir}/var/lib/dpkg/triggers/pysupport">python-support</echo>
+            <echo file="@{installdir}/var/lib/dpkg/triggers/ldconfig">libc-bin</echo>
+            <echo file="@{installdir}/var/lib/dpkg/triggers/cmethopt">apt apt</echo>
+        </sequential>
+    </macrodef>
+    <macrodef name="dpkg">
+        <attribute name="installdir"/>
+        <attribute name="deb"/>
+        <sequential>
+            <setup-dpkg installdir='@{installdir}'/>
+            <exec executable="dpkg" failonerror="true">
+                <env key="PERL_DL_NONLAZY" value="true"/>
+                <env key="DEBIAN_FRONTEND" value="gnome"/>
+                <env key="DEBCONF_DEBUG" value="developer"/>
+                <arg value="--log=@{installdir}/install.log"/>
+                <arg value="--force-all"/>
+                <arg value="--root=@{installdir}"/>
+                <arg value="--instdir=@{installdir}"/>
+                <arg value="--install"/>
+                <arg value="@{deb}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="su-dpkg">
+        <attribute name="installdir"/>
+        <attribute name="deb"/>
+        <sequential>
+            <setup-dpkg installdir='@{installdir}'/>
+            <exec executable="gksu" failonerror="true">
+                <env key="PERL_DL_NONLAZY" value="true"/>
+                <env key="DEBCONF_DEBUG" value="developer"/>
+                <env key="DEBIAN_FRONTEND" value="gnome"/>
+                <arg value="-k"/>
+                <arg value="dpkg --install @{deb}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="simple-createdeb">
+        <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0">
+            <debfileset prefix="/opt/bmtest" dir="${src}" user="${user.name}" group="${user.name}" filemode="384"/>
+            <description short="Test jar created to ${dest}"><![CDATA[This is a rather long description that happily
+describes what it's doing
+next a single empty line
+
+and after this two empty lines
+
+Dest is ${dest}]]></description>
+            <control>
+                <field name="Maintainer" value="Me &lt;myself@moi&gt;"/>
+                <fileset dir="${src}" includes="*.properties"/>
+            </control>
+        </deb>
+        <dpkg installdir="${installdir}" deb="${workspace}/bmtest.deb"/>
+    </target>
+
+    <target name="complex-createdeb">
+        <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0">
+            <description short="Test jar created to ${dest}"/>
+            <control depends="java-sdk">
+                <field name="Maintainer" value="Me &lt;myself@moi&gt;"/>
+                <template id='skiptoend' type='boolean' shortDesc='Skip to the end?'/>
+                <template id='skipquestion1' type='boolean' shortDesc='Skip hot question?'/>
+                <template id='somequestion1' type='string' shortDesc='Is the sun hot ?'
+                          longDesc='Sun really really hot ?'/>
+                <template id='somequestion2' type='string' shortDesc='Is the sun cold ?'
+                          longDesc='Sun really really cold ?'/>
+                <script name='preinst' actions='install'>
+                    <import pkg='tempfile'/>
+                    <confirmlicense id="gl" name="Great License (GL)">Confirm this to proceed</confirmlicense>
+                    <createuser username="bmtest"/>
+                    <input stage="skiptoend" priority='critical'>
+                        <gotostage eq='true' dest="end"/>
+                    </input>
+                    <input stage="skipquestion1" priority='critical' id="skipquestion1">
+                        <gotostage eq='true' dest="question2"/>
+                    </input>
+                    <line stage='question1'>db.reset('bmtest/somequestion1')</line>
+                    <line stage='question1'>db.input(debconf.HIGH, 'bmtest/somequestion1')</line>
+                    <input stage='question2' priority='critical' id='somequestion2' var="q2"/>
+                    <validation test="vars.q2 != 'no'" failStage="question2"
+                                title="You must be kidding" description="The sun is mildly warm you idiot !"/>
+                </script>
+            </control>
+            <debfileset prefix="/opt/bmtest" dir="${src}" user="${user.name}" group="${user.name}"/>
+        </deb>
+        <su-dpkg installdir="${installdir}" deb="${workspace}/bmtest.deb"/>
+    </target>
+
+    <target name="uninstall">
+        <exec executable="gksu" failonerror="true">
+            <arg value="apt-get -y purge bmtest"/>
+        </exec>
+    </target>
+</project>

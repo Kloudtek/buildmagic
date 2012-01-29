@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright (c) $today.year.jGuild International Ltd
+  -->
+
+<persistence xmlns="http://java.sun.com/xml/ns/persistence" version="1.0">
+    <persistence-unit name="standard" transaction-type="JTA">
+        <jta-data-source>exampleDataSourceJndi</jta-data-source>
+        <class>com.example.Entity1</class>
+        <class>com.example.Entity2</class>
+        <properties>
+            <property name="debugLevel" value="High"/>
+            <property name="selfdestruct" value="now"/>
+        </properties>
+    </persistence-unit>
+</persistence>
