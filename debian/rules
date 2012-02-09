@@ -20,3 +20,6 @@ override_dh_install:
 	mkdir -p $(CURDIR)/debian/buildmagic/usr/share/buildmagic
 	cp $(CURDIR)/_build/artifacts/*.jar $(CURDIR)/debian/buildmagic/usr/share/buildmagic/
 	cp $(CURDIR)/src/buildscripts/* $(CURDIR)/debian/buildmagic/usr/share/buildmagic/
+
+override_dh_builddeb:
+	dh_builddeb --destdir=$(CURDIR)/_build/artifacts
