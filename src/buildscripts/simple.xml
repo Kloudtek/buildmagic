@@ -1,0 +1,60 @@
+<project name="bmsimple" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
+    <import file="minimal.xml"/>
+
+    <target name="defaultproperties">
+        <property file="${basedir}/build.properties"/>
+        <property file="${basedir}/build-${user.name}.properties"/>
+        <property file="${user.home}/.buildmagic.properties"/>
+        <property name="build.dir" value="${basedir}/_build"/>
+        <property name="deps.dir" value="${basedir}/_deps"/>
+        <property name="artifacts.dir" value="${build.dir}/artifacts"/>
+        <property name="projectname" value="myproject"/>
+        <property name="jarname" value="${projectname}"/>
+        <path id="cp.build">
+            <fileset dir="${deps.dir}" includes="**/*.jar"/>
+        </path>
+    </target>
+
+    <target name="classes" depends="defaultproperties">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac destdir="${build.dir}/classes" srcdir="${basedir}/src/java" debug="true" classpathref="cp.build"/>
+    </target>
+
+    <target name="jar" depends="classes" extensionOf="artifacts">
+        <mkdir dir="${artifacts.dir}"/>
+        <jar basedir="${build.dir}/classes" destfile="${artifacts.dir}/${jarname}.jar">
+            <fileset dir="src/java" excludes="**/*.class"/>
+        </jar>
+    </target>
+
+    <target name="tests" depends="classes">
+        <taskdef name="testng" classpathref="cp.build" classname="org.testng.TestNGAntTask"/>
+
+        <mkdir dir="${build.dir}/classes-test"/>
+        <javac destdir="${build.dir}/classes-test" srcdir="${basedir}/src/test" classpathref="cp.build" debug="true">
+            <classpath>
+                <path refid="cp.build"/>
+                <path location="${build.dir}/classes"/>
+            </classpath>
+        </javac>
+        <mkdir dir="${build.dir}/reports/testng"/>
+        <testng outputDir="${build.dir}/reports/testng" haltonfailure="true"
+                reporter='org.testng.reporters.JUnitXMLReporter'>
+            <classpath>
+                <path refid="cp.build"/>
+                <path location="${build.dir}/classes"/>
+                <path location="${build.dir}/classes-test"/>
+                <path location="${basedir}/src/test"/>
+                <path location="${basedir}/src/java"/>
+            </classpath>
+            <xmlfileset dir="${basedir}/src/test" includes="**/testng.xml"/>
+        </testng>
+    </target>
+
+    <target name="publish" depends="init-ivy,tests,jar">
+        <fail unless='version'/>
+        <fail unless='reltype'/>
+        <ivy:publish resolver="kloudtek-direct" pubrevision="${version}" status="${reltype}"
+                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]"/>
+    </target>
+</project>

@@ -1,0 +1,15 @@
+Source: buildmagic
+Section: development
+Priority: extra
+Maintainer: Kloudtek Maintainer <info@kloudtek.com>
+Build-Depends: debhelper (>= 8.0.0), ant, ant-contrib, ant-optional, libcommons-httpclient-java, libcommons-codec-java, libcommons-io-java, ivy, libjsch-java
+Standards-Version: 3.9.2
+Homepage: <insert the upstream URL, if relevant>
+#Vcs-Git: git://git.debian.org/collab-maint/buildmagic.git
+#Vcs-Browser: http://git.debian.org/?p=collab-maint/buildmagic.git;a=summary
+
+Package: buildmagic
+Architecture: all
+Depends: ${misc:Depends}, ant, ant-contrib, ant-optional, libcommons-httpclient-java, libcommons-codec-java, libcommons-io-java, ivy, libjsch-java
+Description: Build library for Ant.
+ Build library for Ant.

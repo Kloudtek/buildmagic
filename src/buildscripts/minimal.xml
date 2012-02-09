@@ -1,0 +1,72 @@
+<project name="bmminimal" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+    </target>
+
+    <target name="clean-deps">
+        <delete dir="${deps.dir}"/>
+    </target>
+
+    <target name="deflibspath">
+        <path id="cp.ivy" location="/usr/share/java/ivy.jar"/>
+        <path id="cp.httpclient" location="/usr/share/java/commons-httpclient.jar"/>
+        <path id="cp.clogging" location="/usr/share/java/commons-logging.jar"/>
+        <path id="cp.ccodec" location="/usr/share/java/commons-codec.jar"/>
+        <path id="cp.antcontrib" location="/usr/share/java/ant-contrib.jar"/>
+        <path id="cp.jsch" location="/usr/share/java/jsch.jar"/>
+    </target>
+
+    <target name="load-antcontrib">
+        <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib" classpathref="cp.antcontrib"/>
+    </target>
+
+    <target name="load-ivy" depends="deflibspath,load-antcontrib">
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+            <classpath>
+                <path refid="cp.ivy"/>
+                <path refid="cp.httpclient"/>
+                <path refid="cp.clogging"/>
+                <path refid="cp.ccodec"/>
+                <path refid="cp.jsch"/>
+            </classpath>
+        </taskdef>
+    </target>
+
+    <target name="init-ivy" depends="load-ivy,load-antcontrib">
+        <c:if>
+            <available file="${user.home}/.bm.ivysettings.xml"/>
+            <then>
+                <echo>Loading Ivy Settings file: ${user.home}/.bm.ivysettings.xml</echo>
+                <ivy:settings file="${user.home}/.bm.ivysettings.xml"/>
+            </then>
+            <else>
+                <ivy:settings/>
+            </else>
+        </c:if>
+    </target>
+
+    <target name="deps" depends="defaultproperties,init-ivy">
+        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]" symlink="true"/>
+    </target>
+
+    <target name="publish" depends="init-ivy,tests,jar">
+        <fail unless='version'/>
+        <fail unless='reltype'/>
+        <ivy:publish resolver="kloudtek-direct" pubrevision="${version}" status="${reltype}"
+                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]"/>
+    </target>
+
+    <extension-point name="artifacts"/>
+
+    <target name="debclean" depends="clean">
+        <exec executable="debuild">
+            <arg line="clean"/>
+        </exec>
+    </target>
+
+    <target name="debuild" depends="artifacts">
+        <exec executable="debuild">
+            <arg line="binary"/>
+        </exec>
+    </target>
+</project>
