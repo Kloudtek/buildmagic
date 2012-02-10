@@ -1,0 +1,31 @@
+Changes in branch buildmagic/master, between 079dead7c028f81f5b692d239d7ec647e4e8c14d and 758b50eeeec37cd756483ad4cb72cf36df63e123
+commit 758b50eeeec37cd756483ad4cb72cf36df63e123
+tree eedd2c96612d2af59a8a6073da3669027ebbc1e8
+parent cdfb4784043df1dfee63f061ed8f820ce10893f2
+author Yannick Menager <ymenager@kloudtek> 1328902273 +0000
+committer Yannick Menager <ymenager@kloudtek> 1328902273 +0000
+
+    Testing Changelog
+
+:100644 100644 9cad0a63288a6cecdf34e89e005de80e811af90c 4a864ba6ddf0cf0d82f26c4b8667e2adeb58047b M	src/java/com/kloudtek/buildmagic/changelog/DebianChangelogTask.java
+
+commit cdfb4784043df1dfee63f061ed8f820ce10893f2
+tree 98168a471993a857c5fb4a586bd8f6c2d5ce78b7
+parent 500d6068fcf98eb9e15a80e7b46340a724192db5
+author Yannick Menager <ymenager@kloudtek> 1328902236 +0000
+committer Yannick Menager <ymenager@kloudtek> 1328902236 +0000
+
+    Adding DebianChangelogTask
+
+:100644 100644 eae3f871d1e8574e7a41b54e64e37f84a5664502 f554e30de482c6d1d8d043b212455957ef48a616 M	src/java/com/kloudtek/buildmagic/antlib.xml
+:000000 100644 0000000000000000000000000000000000000000 9cad0a63288a6cecdf34e89e005de80e811af90c A	src/java/com/kloudtek/buildmagic/changelog/DebianChangelogTask.java
+
+commit 500d6068fcf98eb9e15a80e7b46340a724192db5
+tree 836864a0b4ad090b48ed2b3fc5b3e3d014804cd1
+parent 079dead7c028f81f5b692d239d7ec647e4e8c14d
+author Yannick Menager <ymenager@kloudtek> 1328836392 +0000
+committer Yannick Menager <ymenager@kloudtek> 1328836392 +0000
+
+    Added buildscripts
+
+:100644 100644 07c17acf81a79ff042217b047308266934a03bb1 324bfb1cb635c7fbb9754165574cf45bf3dbf6a2 M	debian/changelog
