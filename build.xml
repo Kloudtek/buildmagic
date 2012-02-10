@@ -5,4 +5,5 @@
 <project name="BuildMagic" default="jar" xmlns:bm="antlib:com.kloudtek.buildmagic">
     <import file="src/buildscripts/simple.xml"/>
     <property name="projectname" value="buildmagic"/>
+    <property name="publishresolver" value="kloudtek"/>
 </project>

@@ -52,7 +52,8 @@
     <target name="publish" depends="init-ivy,tests,jar">
         <fail unless='version'/>
         <fail unless='reltype'/>
-        <ivy:publish resolver="kloudtek-direct" pubrevision="${version}" status="${reltype}"
+        <property name="publishresolver" value="default"/>
+        <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
                      artifactspattern="${build.dir}/artifacts/[artifact].[ext]"/>
     </target>
 
