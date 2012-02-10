@@ -2,6 +2,7 @@ package com.kloudtek.buildmagic.changelog;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 
 import javax.swing.text.PlainDocument;
@@ -12,6 +13,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
+
+import static org.apache.tools.ant.Project.MSG_DEBUG;
 
 /**
  * Task used to create a debian changelog.
@@ -93,6 +96,9 @@ public class DebianChangelogTask extends Task {
         if( dest == null ) {
             dest = new File("debian/changelog");
         }
+        if( ! src.exists() ) {
+            throw new BuildException("Src file does not exist:"+src.getPath());
+        }
         StringBuilder changelog = new StringBuilder();
         try {
             List<String> changes = getChanges();
@@ -118,15 +124,19 @@ public class DebianChangelogTask extends Task {
         final List<String> lines = FileUtils.readLines(src);
         switch (type) {
             case JENKINSGIT:
+                log("Reading jenkins git changelog", MSG_DEBUG);
                 for (String line : lines) {
+                    log("Line: "+line, MSG_DEBUG);
                     if( ! line.trim().isEmpty() && line.startsWith(" ") ) {
                         changes.add(line.trim());
                     }
                 }
                 break;
             case PLAIN:
+                log("Reading plain text changelog", MSG_DEBUG);
                 for (String line : lines) {
                     if( ! line.trim().isEmpty()  ) {
+                        log("Line: "+line, MSG_DEBUG);
                         changes.add(line.trim());
                     }
                 }
