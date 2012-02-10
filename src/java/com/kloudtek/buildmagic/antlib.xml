@@ -5,4 +5,5 @@
     <taskdef classname="com.kloudtek.buildmagic.xml.XmlNamespaceMapping" name="xmlnamespacemapping"/>
     <taskdef classname="com.kloudtek.buildmagic.reconfigure.ReconfigureTask" name="recfg"/>
     <taskdef classname="com.kloudtek.buildmagic.createinstaller.deb.CreateDebTask" name="deb"/>
+    <taskdef classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask" name="debchangelog"/>
 </antlib>
