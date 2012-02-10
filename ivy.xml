@@ -8,12 +8,10 @@
     <configurations>
         <conf name="build" visibility="private"/>
         <conf name="default"/>
-        <conf name="bootstrap"/>
     </configurations>
 
     <publications>
         <artifact name="buildmagic" conf="default"/>
-        <artifact name="buildmagic-bootstrap" conf="bootstrap"/>
     </publications>
 
     <dependencies>
