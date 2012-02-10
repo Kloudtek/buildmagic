@@ -12,8 +12,6 @@
 %:
 	dh $@
 
-override_dh_clean:
-
 override_dh_auto_build:
 
 override_dh_install:
@@ -22,4 +20,4 @@ override_dh_install:
 	cp $(CURDIR)/src/buildscripts/* $(CURDIR)/debian/buildmagic/usr/share/buildmagic/
 
 override_dh_builddeb:
-	dh_builddeb --destdir=$(CURDIR)/_build/artifacts
+	dh_builddeb --destdir=$(CURDIR)/_build/artifacts --filename=buildmagic.deb
