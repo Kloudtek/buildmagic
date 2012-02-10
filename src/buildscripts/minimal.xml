@@ -1,5 +1,5 @@
 <project name="bmminimal" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
-    <target name="clean">
+    <target name="clean-build" extensionOf="clean">
         <delete dir="${build.dir}"/>
     </target>
 
@@ -57,17 +57,9 @@
                      artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"/>
     </target>
 
-    <extension-point name="artifacts"/>
+    <extension-point name="clean"/>
 
-    <target name="debclean" depends="clean">
-        <exec executable="debuild">
-            <arg line="clean"/>
-        </exec>
-    </target>
+    <extension-point name="compile"/>
 
-    <target name="debuild" depends="artifacts">
-        <exec executable="debuild">
-            <arg line="binary"/>
-        </exec>
-    </target>
+    <extension-point name="artifacts" depends="compile"/>
 </project>
