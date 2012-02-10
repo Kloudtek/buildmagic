@@ -6,7 +6,7 @@ import org.apache.tools.ant.Task;
 import java.io.File;
 
 /**
- * Task used to create a debian changelog
+ * Task used to create a debian changelog.
  */
 public class DebianChangelogTask extends Task {
     private File dest;
