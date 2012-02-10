@@ -1,8 +1,6 @@
 <project name="bmdebian">
-    <target name="debclean" extensionOf="clean">
-        <exec executable="debuild">
-            <arg line="clean"/>
-        </exec>
+    <target name="clean-deb" extensionOf="clean">
+        <exec executable="dh_clean"/>
     </target>
 
     <target name="debuild" extensionOf="artifacts">
