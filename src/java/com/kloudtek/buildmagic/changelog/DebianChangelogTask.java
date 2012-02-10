@@ -91,7 +91,7 @@ public class DebianChangelogTask extends Task {
             throw new BuildException("maintainerEmail is not defined");
         }
         if( dest == null ) {
-            dest = new File("debian/changelog.txt");
+            dest = new File("debian/changelog");
         }
         StringBuilder changelog = new StringBuilder();
         try {
