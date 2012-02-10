@@ -1,5 +1,5 @@
-buildmagic (0.9-1) unstable; urgency=low
+buildmagic (@version@) unstable; urgency=low
 
-  * Initial release (Closes: #nnnn)  <nnnn is the bug number of your ITP>
+  * Release @version@
 
- -- Yannick Menager <yannick@unknown>  Wed, 08 Feb 2012 22:27:59 +0000
+ -- Kloudtek Maintainers <info@kloudtek.com>  Wed, 08 Feb 2012 22:27:59 +0000
