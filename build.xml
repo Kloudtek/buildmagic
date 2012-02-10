@@ -6,4 +6,10 @@
     <import file="src/buildscripts/simple.xml"/>
     <property name="projectname" value="buildmagic"/>
     <property name="publishresolver" value="kloudtek"/>
+    
+    <target name="publish-debrep" extensionOf="artifacts">
+        <exec executable="curl">
+            <arg line="-k -F file=@_build/artifacts/buildmagic.deb -Fdist=oneiric http://ec2-107-22-254-188.compute-1.amazonaws.com/cgi-bin/uploaddeb"/>
+        </exec>
+    </target>
 </project>
