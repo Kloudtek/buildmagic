@@ -14,11 +14,15 @@
         </exec>
     </target>
     
-    <target name="jenkins-update-debian-changelog">
-        <loadfile property="changelog" srcFile="../lastSuccessful/changelog.xml"/>
-
-        <echo file="${basedir}/debian/changelog">
-            ${changelog}
-        </echo>
+    <target name="jenkins-update-debian-changelog" depends="classes">
+        <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
+            <classpath>
+                <path location="${build.dir}/classes"/>
+                <fileset dir="${deps.dir}"/>
+            </classpath>
+        </taskdef>
+        <debchangelog projectname="${projectname}" src="../lastSuccessful/changelog.xml" type="jenkinsgit"
+                      maintainerName="Kloudtek Maintainers" maintainerEmail="info@kloudtek.com"
+                      version="${version}" distributions="oneiric"/>
     </target>
 </project>
