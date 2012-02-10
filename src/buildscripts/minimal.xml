@@ -49,7 +49,7 @@
         <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]" symlink="true"/>
     </target>
 
-    <target name="publish" depends="init-ivy,tests,jar">
+    <target name="publish-ivy" depends="init-ivy,tests,artifacts">
         <fail unless='version'/>
         <fail unless='reltype'/>
         <property name="publishresolver" value="default"/>
