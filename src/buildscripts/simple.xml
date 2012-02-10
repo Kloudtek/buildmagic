@@ -50,11 +50,4 @@
             <xmlfileset dir="${basedir}/src/test" includes="**/testng.xml"/>
         </testng>
     </target>
-
-    <target name="publish" depends="init-ivy,tests,jar">
-        <fail unless='version'/>
-        <fail unless='reltype'/>
-        <ivy:publish resolver="kloudtek-direct" pubrevision="${version}" status="${reltype}"
-                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]"/>
-    </target>
 </project>
