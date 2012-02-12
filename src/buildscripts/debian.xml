@@ -1,10 +1,10 @@
 <project name="bmdebian">
     <target name="clean-deb" extensionOf="clean">
-        <exec executable="dh_clean"/>
+        <exec executable="dh_clean" failonerror="true" failifexecutionfails="true"/>
     </target>
 
     <target name="debuild" extensionOf="post-artifacts" depends="artifacts">
-        <exec executable="debuild">
+        <exec executable="debuild" failonerror="true" failifexecutionfails="true">
             <arg line="binary"/>
         </exec>
     </target>
