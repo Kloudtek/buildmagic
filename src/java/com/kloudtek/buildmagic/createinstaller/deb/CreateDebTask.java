@@ -169,7 +169,9 @@ public class CreateDebTask extends Task {
             ArchiveHelper.writeDataBufferToAr(debFile, createDataArchive(), "data.tar.gz");
             debFile.close();
             log("Created "+destfile.getPath());
-        } catch (RuntimeException | IOException e) {
+        } catch (RuntimeException e) {
+            throw new BuildException(e);
+        } catch ( IOException e) {
             throw new BuildException(e);
         } finally {
             dataBufferManager.clear();
