@@ -1,20 +1,6 @@
 <project name="bmsimple" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
     <import file="minimal.xml"/>
 
-    <target name="defaultproperties">
-        <property file="${basedir}/build.properties"/>
-        <property file="${basedir}/build-${user.name}.properties"/>
-        <property file="${user.home}/.buildmagic.properties"/>
-        <property name="build.dir" value="${basedir}/_build"/>
-        <property name="deps.dir" value="${basedir}/_deps"/>
-        <property name="artifacts.dir" value="${build.dir}/artifacts"/>
-        <property name="projectname" value="myproject"/>
-        <property name="jarname" value="${projectname}"/>
-        <path id="cp.build">
-            <fileset dir="${deps.dir}" includes="**/*.jar"/>
-        </path>
-    </target>
-
     <target name="classes" depends="defaultproperties" extensionOf="compile">
         <mkdir dir="${build.dir}/classes"/>
         <javac destdir="${build.dir}/classes" srcdir="${basedir}/src/java" debug="true" classpathref="cp.build"/>

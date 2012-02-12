@@ -3,7 +3,7 @@
         <exec executable="dh_clean"/>
     </target>
 
-    <target name="debuild" extensionOf="artifacts">
+    <target name="debuild" extensionOf="post-artifacts" depends="artifacts">
         <exec executable="debuild">
             <arg line="binary"/>
         </exec>

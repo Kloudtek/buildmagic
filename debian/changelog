@@ -1,5 +1,5 @@
-buildmagic (@version@) unstable; urgency=low
+buildmagic (0.0~dev) oneiric; urgency=low
 
-  * Release @version@
+  * Release 0.0~dev
 
- -- Kloudtek Maintainers <info@kloudtek.com>  Wed, 08 Feb 2012 22:27:59 +0000
+ -- Kloudtek Maintainers <info@kloudtek.com>  Sun, 12 Feb 2012 21:36:09 +0000

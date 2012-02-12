@@ -7,6 +7,20 @@
         <delete dir="${deps.dir}"/>
     </target>
 
+    <target name="defaultproperties" extensionOf="init">
+        <property file="${basedir}/build.properties"/>
+        <property file="${basedir}/build-${user.name}.properties"/>
+        <property file="${user.home}/.buildmagic.properties"/>
+        <property name="build.dir" value="${basedir}/_build"/>
+        <property name="deps.dir" value="${basedir}/_deps"/>
+        <property name="artifacts.dir" value="${build.dir}/artifacts"/>
+        <property name="projectname" value="myproject"/>
+        <property name="jarname" value="${projectname}"/>
+        <path id="cp.build">
+            <fileset dir="${deps.dir}" includes="**/*.jar"/>
+        </path>
+    </target>
+
     <target name="deflibspath">
         <path id="cp.ivy" location="/usr/share/java/ivy.jar"/>
         <path id="cp.httpclient" location="/usr/share/java/commons-httpclient.jar"/>
@@ -16,20 +30,19 @@
         <path id="cp.ccompress" location="/usr/share/java/commons-compress.jar"/>
         <path id="cp.antcontrib" location="/usr/share/java/ant-contrib.jar"/>
         <path id="cp.jsch" location="/usr/share/java/jsch.jar"/>
+        <dirname property="bmminimal.basedir" file="${ant.file.bmminimal}"/>
+        <path id="cp.buildmagic" location="${bmminimal.basedir}/buildmagic.jar"/>
     </target>
 
-    <target name="load-baseantlibs">
+    <target name="load-baseantlibs" depends="deflibspath" extensionOf="init">
         <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib" classpathref="cp.antcontrib"/>
         <taskdef resource="com/kloudtek/buildmagic/antlib.xml" uri="antlib:com.kloudtek.buildmagic">
             <classpath>
-                <path location="${bmminimal.basedir}/buildmagic.jar"/>
+                <path refid="cp.buildmagic"/>
                 <path refid="cp.cio"/>
                 <path refid="cp.ccompress"/>
             </classpath>
         </taskdef>
-    </target>
-
-    <target name="load-ivy" depends="deflibspath,load-baseantlibs">
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
             <classpath>
                 <path refid="cp.ivy"/>
@@ -41,7 +54,7 @@
         </taskdef>
     </target>
 
-    <target name="init-ivy" depends="load-ivy,load-baseantlibs">
+    <target name="init-ivy">
         <c:if>
             <available file="${user.home}/.bm.ivysettings.xml"/>
             <then>
@@ -54,11 +67,11 @@
         </c:if>
     </target>
 
-    <target name="deps" depends="defaultproperties,init-ivy">
+    <target name="deps" depends="init,init-ivy">
         <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]" symlink="true"/>
     </target>
 
-    <target name="publish-ivy" depends="init-ivy,tests,artifacts">
+    <target name="publish-ivy" depends="init-ivy,artifacts">
         <fail unless='version'/>
         <fail unless='reltype'/>
         <property name="publishresolver" value="default"/>
@@ -68,7 +81,17 @@
 
     <extension-point name="clean"/>
 
-    <extension-point name="compile"/>
+    <extension-point name="init"/>
 
-    <extension-point name="artifacts" depends="compile"/>
+    <extension-point name="pre-compile" depends="init"/>
+
+    <extension-point name="compile" depends="pre-compile"/>
+
+    <extension-point name="post-compile" depends="compile"/>
+
+    <extension-point name="artifacts" depends="post-compile"/>
+
+    <extension-point name="post-artifacts" depends="artifacts"/>
+
+    <extension-point name="publish" depends="post-artifacts"/>
 </project>

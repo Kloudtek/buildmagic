@@ -9,10 +9,7 @@ import javax.swing.text.PlainDocument;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static org.apache.tools.ant.Project.MSG_DEBUG;
 
@@ -78,12 +75,6 @@ public class DebianChangelogTask extends Task {
         if( distributions == null ) {
             throw new BuildException("Type is not defined");
         }
-        if( type == null ) {
-            throw new BuildException("Type is not defined");
-        }
-        if( src == null ) {
-            throw new BuildException("Src is not defined");
-        }
         if( version == null ) {
             throw new BuildException("Version");
         }
@@ -95,9 +86,6 @@ public class DebianChangelogTask extends Task {
         }
         if( dest == null ) {
             dest = new File("debian/changelog");
-        }
-        if( ! src.exists() ) {
-            throw new BuildException("Src file does not exist:"+src.getPath());
         }
         StringBuilder changelog = new StringBuilder();
         try {
@@ -120,6 +108,12 @@ public class DebianChangelogTask extends Task {
     
     @SuppressWarnings("unchecked")
     public List<String> getChanges() throws IOException {
+        if( src == null ) {
+            return new ArrayList<String>();
+        }
+        if( ! src.exists() ) {
+            throw new BuildException("Src file does not exist:"+src.getPath());
+        }
         HashSet<String> changes = new HashSet<String>();
         final List<String> lines = FileUtils.readLines(src);
         switch (type) {

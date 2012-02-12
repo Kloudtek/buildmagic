@@ -2,18 +2,18 @@
   ~ Copyright (c) $today.year.jGuild International Ltd
   -->
 
-<project name="BuildMagic" default="jar" xmlns:bm="antlib:com.kloudtek.buildmagic">
+<project name="BuildMagic" default="jar">
     <import file="src/buildscripts/debian.xml"/>
     <import file="src/buildscripts/simple.xml"/>
     <property name="projectname" value="buildmagic"/>
     <property name="publishresolver" value="kloudtek"/>
-    
+
     <target name="publish-debrep" depends="debuild">
         <exec executable="curl">
             <arg line="-k -F file=@_build/artifacts/buildmagic.deb -Fdist=oneiric http://ec2-107-22-254-188.compute-1.amazonaws.com/cgi-bin/uploaddeb"/>
         </exec>
     </target>
-    
+
     <target name="jenkins-update-debian-changelog" depends="classes">
         <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
             <classpath>
@@ -24,5 +24,24 @@
         <debchangelog projectname="${projectname}" src="../lastSuccessful/changelog.xml" type="jenkinsgit"
                       maintainerName="Kloudtek Maintainers" maintainerEmail="info@kloudtek.com"
                       version="${version}" distributions="oneiric"/>
+    </target>
+
+    <target name="install" depends="clean,init,classes">
+        <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
+            <classpath>
+                <path location="${build.dir}/classes"/>
+                <fileset dir="${deps.dir}"/>
+            </classpath>
+        </taskdef>
+        <debchangelog projectname="${projectname}"
+                      maintainerName="Kloudtek Maintainers" maintainerEmail="info@kloudtek.com"
+                      version="0.0~dev" distributions="oneiric"/>
+        <antcall target="debuild"/>
+        <exec executable="gksu">
+            <arg value="apt-get remove -y buildmagic"/>
+        </exec>
+        <exec executable="gksu">
+            <arg value="dpkg -i ${artifacts.dir}/buildmagic.deb"/>
+        </exec>
     </target>
 </project>
