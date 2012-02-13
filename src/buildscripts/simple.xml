@@ -11,6 +11,7 @@
         <jar basedir="${build.dir}/classes" destfile="${artifacts.dir}/${jarname}.jar">
             <fileset dir="src/java" excludes="**/*.class"/>
         </jar>
+        <jar basedir="${basedir}/src/java" destfile="${artifacts.dir}/${jarname}-sources.jar"/>
     </target>
 
     <target name="tests" depends="classes">
