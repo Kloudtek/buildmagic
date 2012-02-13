@@ -68,7 +68,9 @@
     </target>
 
     <target name="deps" depends="init,init-ivy">
-        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]" symlink="true"/>
+        <ivy:resolve/>
+        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
+        <ivy:report graph="false" todir="${deps.dir}"/>
     </target>
 
     <target name="publish-ivy" depends="init-ivy,artifacts">
