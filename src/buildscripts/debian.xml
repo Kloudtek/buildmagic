@@ -1,9 +1,9 @@
-<project name="bmdebian">
+<project name="bmdebian" xmlns:bm="antlib:com.kloudtek.buildmagic">
     <target name="clean-deb" extensionOf="clean">
         <exec executable="dh_clean" failonerror="true" failifexecutionfails="true"/>
     </target>
 
-    <target name="debuild" extensionOf="post-artifacts" depends="artifacts">
+    <target name="debuild" depends="clean-deb">
         <exec executable="debuild" failonerror="true" failifexecutionfails="true">
             <arg line="binary"/>
         </exec>

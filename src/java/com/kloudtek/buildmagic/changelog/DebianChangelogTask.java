@@ -112,7 +112,8 @@ public class DebianChangelogTask extends Task {
             return new ArrayList<String>();
         }
         if( ! src.exists() ) {
-            throw new BuildException("Src file does not exist:"+src.getPath());
+            log("Src file does not exist:"+src.getPath(),Project.MSG_WARN);
+            return new ArrayList<String>();
         }
         HashSet<String> changes = new HashSet<String>();
         final List<String> lines = FileUtils.readLines(src);

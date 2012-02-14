@@ -1,0 +1,7 @@
+<project name="jenkins-debian"  xmlns:bm="antlib:com.kloudtek.buildmagic">
+    <target name="update-changelog" extensionOf="pre-artifacts">
+        <bm:debchangelog projectname="${projectname}" src="../lastSuccessful/changelog.xml" type="jenkinsgit"
+                      maintainerName="Kloudtek Maintainers" maintainerEmail="info@kloudtek.com"
+                      version="${version}" distributions="oneiric"/>
+    </target>
+</project>

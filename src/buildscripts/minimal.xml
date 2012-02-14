@@ -91,7 +91,9 @@
 
     <extension-point name="post-compile" depends="compile"/>
 
-    <extension-point name="artifacts" depends="post-compile"/>
+    <extension-point name="pre-artifacts" depends="post-compile"/>
+
+    <extension-point name="artifacts" depends="pre-artifacts"/>
 
     <extension-point name="post-artifacts" depends="artifacts"/>
 
