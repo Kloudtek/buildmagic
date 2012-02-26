@@ -77,6 +77,7 @@
         <fail unless='version'/>
         <fail unless='reltype'/>
         <property name="publishresolver" value="default"/>
+        <delete file="${build.dir}/artifacts/ivy.xml"/>
         <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
                      artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"/>
     </target>
