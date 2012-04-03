@@ -82,9 +82,9 @@
                      artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"/>
     </target>
 
-    <extension-point name="clean"/>
-
     <extension-point name="init"/>
+
+    <extension-point name="clean" depends="init"/>
 
     <extension-point name="pre-compile" depends="init"/>
 
