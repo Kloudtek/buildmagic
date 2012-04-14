@@ -79,7 +79,7 @@
         <property name="version" value="ivy.new.revision"/>
     </target>
 
-    <target name="publish-ivy" depends="init-ivy,artifacts" extensionOf="publish">
+    <target name="publish-ivy" depends="init-ivy,deps" extensionOf="publish">
         <ivy:info/>
         <c:if>
             <not>

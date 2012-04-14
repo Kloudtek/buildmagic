@@ -46,4 +46,5 @@
     </target>
 
     <target name="_publish" depends="publish"/>
+    <target name="test" depends="deps,publish"/>
 </project>
