@@ -73,9 +73,22 @@
         <ivy:report graph="false" todir="${deps.dir}"/>
     </target>
 
-    <target name="publish-ivy" depends="init-ivy,artifacts">
-        <fail unless='version'/>
-        <fail unless='reltype'/>
+    <target name="resolve-ivy-version" unless="version">
+        <ivy:resolve/>
+        <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" />
+        <property name="version" value="ivy.new.revision"/>
+    </target>
+
+    <target name="publish-ivy" depends="init-ivy,version,artifacts" extensionOf="publish">
+        <ivy:info/>
+        <c:if>
+            <available property="version"/>
+            <then>
+                <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" default="${ivy.revision}"/>
+            </then>
+        </c:if>
+        <property name="version" value="${ivy.new.revision}"/>
+        <property name="reltype" value="${ivy.status}"/>
         <property name="publishresolver" value="default"/>
         <delete file="${build.dir}/artifacts/ivy.xml"/>
         <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
