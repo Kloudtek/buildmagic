@@ -113,5 +113,7 @@
 
     <extension-point name="post-artifacts" depends="artifacts"/>
 
-    <extension-point name="publish" depends="post-artifacts"/>
+    <extension-point name="pre-publish" depends="post-artifacts"/>
+
+    <extension-point name="publish" depends="pre-publish"/>
 </project>

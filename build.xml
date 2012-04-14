@@ -8,13 +8,13 @@
     <property name="projectname" value="buildmagic"/>
     <property name="publishresolver" value="kloudtek"/>
 
-    <target name="publish-debrep" depends="debuild">
+    <target name="publish-debrep" extensionOf="publish">
         <exec executable="curl">
             <arg line="-k -F file=@_build/artifacts/buildmagic.deb -Fdist=oneiric http://ec2-107-22-254-188.compute-1.amazonaws.com/cgi-bin/uploaddeb"/>
         </exec>
     </target>
 
-    <target name="jenkins-update-debian-changelog" depends="classes">
+    <target name="jenkins-update-debian-changelog" extensionOf="pre-publish">
         <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
             <classpath>
                 <path location="${build.dir}/classes"/>
