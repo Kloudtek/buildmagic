@@ -79,20 +79,22 @@
         <property name="version" value="ivy.new.revision"/>
     </target>
 
-    <target name="publish-ivy" depends="init-ivy,version,artifacts" extensionOf="publish">
+    <target name="publish-ivy" depends="init-ivy,artifacts" extensionOf="publish">
         <ivy:info/>
         <c:if>
-            <available property="version"/>
+            <not>
+                <isset property="version"/>
+            </not>
             <then>
                 <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" default="${ivy.revision}"/>
+                <property name="version" value="${ivy.new.revision}"/>
             </then>
         </c:if>
-        <property name="version" value="${ivy.new.revision}"/>
         <property name="reltype" value="${ivy.status}"/>
         <property name="publishresolver" value="default"/>
-        <delete file="${build.dir}/artifacts/ivy.xml"/>
         <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
-                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"/>
+                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"
+                     forcedeliver="true"/>
     </target>
 
     <extension-point name="init"/>

@@ -44,4 +44,6 @@
             <arg value="dpkg -i ${artifacts.dir}/buildmagic.deb"/>
         </exec>
     </target>
+
+    <target name="_publish" depends="publish"/>
 </project>
