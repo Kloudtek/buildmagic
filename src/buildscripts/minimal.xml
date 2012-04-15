@@ -76,13 +76,7 @@
         <ivy:report graph="false" todir="${deps.dir}"/>
     </target>
 
-    <target name="resolve-ivy-version" unless="version">
-        <ivy:resolve/>
-        <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" />
-        <property name="version" value="ivy.new.revision"/>
-    </target>
-
-    <target name="publish-ivy" depends="init-ivy,deps" extensionOf="publish">
+    <target name="resolve-ivy-version" depends="init-ivy" unless="version" extensionOf="init">
         <ivy:info/>
         <c:if>
             <not>
@@ -94,6 +88,9 @@
             </then>
         </c:if>
         <property name="reltype" value="${ivy.status}"/>
+    </target>
+
+    <target name="publish-ivy" depends="init-ivy,resolve-ivy-version" extensionOf="publish">
         <property name="publishresolver" value="default"/>
         <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
                      artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"

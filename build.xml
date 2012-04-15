@@ -14,7 +14,7 @@
         </exec>
     </target>
 
-    <target name="jenkins-update-debian-changelog" extensionOf="pre-publish">
+    <target name="jenkins-update-debian-changelog" depends="resolve-ivy-version" extensionOf="pre-artifacts">
         <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
             <classpath>
                 <path location="${build.dir}/classes"/>
