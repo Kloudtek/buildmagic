@@ -77,7 +77,7 @@
         <ivy:report graph="false" todir="${reports.dir}/ivy"/>
     </target>
 
-    <target name="resolve-ivy-version" depends="init-ivy" unless="version" extensionOf="init">
+    <target name="resolve-ivy-version" depends="init-ivy" extensionOf="init">
         <ivy:info/>
         <c:if>
             <not>
