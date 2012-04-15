@@ -4,8 +4,8 @@
 
 <project name="BuildMagic" default="jar">
     <import file="src/buildscripts/debian.xml"/>
+    <import file="src/buildscripts/ivy.xml"/>
     <import file="src/buildscripts/simple.xml"/>
-    <property name="projectname" value="buildmagic"/>
     <property name="publishresolver" value="kloudtek"/>
 
     <target name="publish-debrep" extensionOf="publish">

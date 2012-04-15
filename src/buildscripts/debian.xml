@@ -1,4 +1,5 @@
 <project name="bmdebian" xmlns:bm="antlib:com.kloudtek.buildmagic">
+    <import file="core.xml"/>
     <target name="clean-deb" extensionOf="clean">
         <exec executable="dh_clean" failonerror="true" failifexecutionfails="true"/>
     </target>

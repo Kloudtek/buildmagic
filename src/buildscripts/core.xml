@@ -1,10 +1,6 @@
-<project name="bmminimal" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
+<project name="bmcore" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
     <target name="clean-build" extensionOf="clean">
         <delete dir="${build.dir}"/>
-    </target>
-
-    <target name="clean-deps">
-        <delete dir="${deps.dir}"/>
     </target>
 
     <target name="defaultproperties" extensionOf="init">
@@ -12,18 +8,14 @@
         <property file="${basedir}/build-${user.name}.properties"/>
         <property file="${user.home}/.buildmagic.properties"/>
         <property name="build.dir" value="${basedir}/_build"/>
-        <property name="deps.dir" value="${basedir}/_deps"/>
         <property name="artifacts.dir" value="${build.dir}/artifacts"/>
         <property name="reports.dir" value="${build.dir}/reports"/>
-        <property name="projectname" value="myproject"/>
-        <property name="jarname" value="${projectname}"/>
         <path id="cp.build">
             <fileset dir="${deps.dir}" includes="**/*.jar"/>
         </path>
     </target>
 
     <target name="deflibspath">
-        <path id="cp.ivy" location="/usr/share/java/ivy.jar"/>
         <path id="cp.httpclient" location="/usr/share/java/commons-httpclient.jar"/>
         <path id="cp.clogging" location="/usr/share/java/commons-logging.jar"/>
         <path id="cp.ccodec" location="/usr/share/java/commons-codec.jar"/>
@@ -46,63 +38,6 @@
                 <path refid="cp.ccompress"/>
             </classpath>
         </taskdef>
-        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"
-                loaderref="ivyloader">
-            <classpath>
-                <path refid="cp.ivy"/>
-                <path refid="cp.httpclient"/>
-                <path refid="cp.clogging"/>
-                <path refid="cp.ccodec"/>
-                <path refid="cp.jsch"/>
-            </classpath>
-        </taskdef>
-    </target>
-
-    <target name="init-ivy">
-        <c:if>
-            <available file="${user.home}/.bm.ivysettings.xml"/>
-            <then>
-                <echo>Loading Ivy Settings file: ${user.home}/.bm.ivysettings.xml</echo>
-                <ivy:settings file="${user.home}/.bm.ivysettings.xml"/>
-            </then>
-            <else>
-                <ivy:settings/>
-            </else>
-        </c:if>
-    </target>
-
-    <target name="deps" depends="init,init-ivy">
-        <ivy:resolve/>
-        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
-        <ivy:report graph="false" todir="${reports.dir}/ivy"/>
-    </target>
-
-    <target name="resolve-ivy-version" depends="init-ivy" extensionOf="init">
-        <ivy:info/>
-        <c:if>
-            <not>
-                <isset property="version"/>
-            </not>
-            <then>
-                <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" default="${ivy.revision}"/>
-                <property name="version" value="${ivy.new.revision}"/>
-            </then>
-        </c:if>
-        <echo>Ivy New Revision: ${version}</echo>
-        <c:if>
-            <isset property="ivy.status"/>
-            <then>
-                <property name="reltype" value="${ivy.status}"/>
-            </then>
-        </c:if>
-        <echo>Ivy Status: ${reltype}</echo>
-    </target>
-
-    <target name="publish-ivy" depends="init-ivy,resolve-ivy-version" extensionOf="publish">
-        <property name="publishresolver" value="default"/>
-        <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
-                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"
-                     forcedeliver="true"/>
     </target>
 
     <extension-point name="init"/>
