@@ -14,6 +14,7 @@
         <property name="build.dir" value="${basedir}/_build"/>
         <property name="deps.dir" value="${basedir}/_deps"/>
         <property name="artifacts.dir" value="${build.dir}/artifacts"/>
+        <property name="reports.dir" value="${build.dir}/reports"/>
         <property name="projectname" value="myproject"/>
         <property name="jarname" value="${projectname}"/>
         <path id="cp.build">
@@ -73,7 +74,7 @@
     <target name="deps" depends="init,init-ivy">
         <ivy:resolve/>
         <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
-        <ivy:report graph="false" todir="${deps.dir}"/>
+        <ivy:report graph="false" todir="${reports.dir}/ivy"/>
     </target>
 
     <target name="resolve-ivy-version" depends="init-ivy" unless="version" extensionOf="init">
