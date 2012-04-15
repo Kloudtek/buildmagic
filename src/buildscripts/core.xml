@@ -23,7 +23,7 @@
         <path id="cp.ccompress" location="/usr/share/java/commons-compress.jar"/>
         <path id="cp.antcontrib" location="/usr/share/java/ant-contrib.jar"/>
         <path id="cp.jsch" location="/usr/share/java/jsch.jar"/>
-        <dirname property="buildmagic.home" file="${ant.file.bmminimal}"/>
+        <dirname property="buildmagic.home" file="${ant.file.bmcore}"/>
         <path id="cp.buildmagic" location="${buildmagic.home}/buildmagic.jar"/>
     </target>
 
