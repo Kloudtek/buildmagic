@@ -23,8 +23,8 @@
         <path id="cp.ccompress" location="/usr/share/java/commons-compress.jar"/>
         <path id="cp.antcontrib" location="/usr/share/java/ant-contrib.jar"/>
         <path id="cp.jsch" location="/usr/share/java/jsch.jar"/>
-        <dirname property="bmminimal.basedir" file="${ant.file.bmminimal}"/>
-        <path id="cp.buildmagic" location="${bmcore.basedir}/buildmagic.jar"/>
+        <dirname property="buildmagic.home" file="${ant.file.bmminimal}"/>
+        <path id="cp.buildmagic" location="${buildmagic.home}/buildmagic.jar"/>
     </target>
 
     <target name="load-baseantlibs" depends="deflibspath" extensionOf="init">
