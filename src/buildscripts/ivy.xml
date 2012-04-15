@@ -4,7 +4,7 @@
         <delete dir="${deps.dir}"/>
     </target>
 
-    <target name="init-ivy">
+    <target name="init-ivy" depends="deflibspath">
         <path id="cp.ivy" location="/usr/share/java/ivy.jar"/>
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"
                 loaderref="ivyloader">
