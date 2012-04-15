@@ -35,15 +35,18 @@
     </target>
 
     <target name="load-baseantlibs" depends="deflibspath" extensionOf="init">
-        <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib" classpathref="cp.antcontrib"/>
-        <taskdef resource="com/kloudtek/buildmagic/antlib.xml" uri="antlib:com.kloudtek.buildmagic">
+        <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib" classpathref="cp.antcontrib"
+                loaderref="antcloader"/>
+        <taskdef resource="com/kloudtek/buildmagic/antlib.xml" uri="antlib:com.kloudtek.buildmagic"
+                loaderref="bmloader">
             <classpath>
                 <path refid="cp.buildmagic"/>
                 <path refid="cp.cio"/>
                 <path refid="cp.ccompress"/>
             </classpath>
         </taskdef>
-        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant">
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"
+                loaderref="ivyloader">
             <classpath>
                 <path refid="cp.ivy"/>
                 <path refid="cp.httpclient"/>
