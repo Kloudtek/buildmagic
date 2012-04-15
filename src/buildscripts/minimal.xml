@@ -86,16 +86,16 @@
             <then>
                 <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" default="${ivy.revision}"/>
                 <property name="version" value="${ivy.new.revision}"/>
-                <echo>Ivy New Revision: ${version}</echo>
             </then>
         </c:if>
+        <echo>Ivy New Revision: ${version}</echo>
         <c:if>
             <isset property="ivy.status"/>
             <then>
                 <property name="reltype" value="${ivy.status}"/>
-                <echo>Ivy Status: ${reltype}</echo>
             </then>
         </c:if>
+        <echo>Ivy Status: ${reltype}</echo>
     </target>
 
     <target name="publish-ivy" depends="init-ivy,resolve-ivy-version" extensionOf="publish">
