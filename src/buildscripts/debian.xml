@@ -3,7 +3,7 @@
         <exec executable="dh_clean" failonerror="true" failifexecutionfails="true"/>
     </target>
 
-    <target name="debuild" depends="clean-deb">
+    <target name="debuild" depends="clean-deb" extensionOf="artifacts">
         <exec executable="debuild" failonerror="true" failifexecutionfails="true">
             <arg line="binary"/>
         </exec>
