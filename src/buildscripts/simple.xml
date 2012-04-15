@@ -8,7 +8,7 @@
 
     <target name="jar" depends="classes" extensionOf="artifacts">
         <mkdir dir="${artifacts.dir}"/>
-        <jar basedir="${build.dir}/classes" destfile="${artifacts.dir}/${jarname}.jar">
+        <jar basedir="${build.dir}/classes" destfile="${artifacts.dir}/${projectname}.jar">
             <fileset dir="src/java" excludes="**/*.class"/>
         </jar>
         <jar basedir="${basedir}/src/java" destfile="${artifacts.dir}/${jarname}-sources.jar"/>
