@@ -231,10 +231,12 @@ public class CreateDebTask extends Task {
             w.write("\nDescription: ");
             w.write(entry.getShortDesc());
             w.write("\n");
-            if (entry.getLongDesc() != null) {
-                w.write(generateExtendedControlField(entry.getLongDesc()));
-                w.write("\n");
+            String longDesc = entry.getLongDesc();
+            if( longDesc == null ) {
+                longDesc = entry.getShortDesc();
             }
+            w.write(generateExtendedControlField(longDesc));
+            w.write("\n");
             if (iterator.hasNext()) {
                 w.write("\n");
             }
