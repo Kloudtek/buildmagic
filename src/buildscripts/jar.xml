@@ -1,4 +1,4 @@
-<project name="bmsimple" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
+<project name="bmjar" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
     <import file="core.xml"/>
 
     <target name="classes" depends="defaultproperties" extensionOf="compile">
