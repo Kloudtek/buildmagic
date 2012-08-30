@@ -28,6 +28,15 @@
         <jarDirectory url="file://$MODULE_DIR$/_deps/default-jar" recursive="false" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library name="libs">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/lib/ant-contrib-1.0b3.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
   </component>
 </module>
 

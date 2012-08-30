@@ -10,7 +10,6 @@ import com.kloudtek.buildmagic.createinstaller.deb.TemplateEntry;
 import org.apache.tools.ant.BuildException;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class ScriptInputAction extends ScriptAction {

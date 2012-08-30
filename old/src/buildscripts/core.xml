@@ -1,4 +1,5 @@
 <project name="bmcore" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
+    <property name="buildmagic.home" value="${bmcore.basedir}"/>
     <target name="clean-build" extensionOf="clean">
         <delete dir="${build.dir}"/>
     </target>

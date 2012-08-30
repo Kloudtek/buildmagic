@@ -7,7 +7,6 @@ package com.kloudtek.buildmagic.xml;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.Reference;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.xml.sax.SAXException;
 
@@ -20,7 +19,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpCookie;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;

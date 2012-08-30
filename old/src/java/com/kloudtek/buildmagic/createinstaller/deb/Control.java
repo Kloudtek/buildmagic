@@ -4,9 +4,6 @@
 
 package com.kloudtek.buildmagic.createinstaller.deb;
 
-import com.kloudtek.buildmagic.createinstaller.deb.scriptaction.ConfirmLicenseAction;
-import com.kloudtek.buildmagic.createinstaller.deb.scriptaction.CreateGroupAction;
-import com.kloudtek.buildmagic.createinstaller.deb.scriptaction.CreateUserAction;
 import org.apache.tools.ant.types.ResourceCollection;
 import org.jetbrains.annotations.NotNull;
 

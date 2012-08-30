@@ -13,16 +13,13 @@ import org.testng.annotations.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.xpath.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.util.HashMap;
-import java.util.Properties;
 
 public class XmlDocumentTests {
     @Test

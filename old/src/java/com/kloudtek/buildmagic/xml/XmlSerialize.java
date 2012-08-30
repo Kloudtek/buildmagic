@@ -7,7 +7,6 @@ package com.kloudtek.buildmagic.xml;
 import org.apache.tools.ant.BuildException;
 import org.apache.tools.ant.Task;
 import org.w3c.dom.DOMConfiguration;
-import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.bootstrap.DOMImplementationRegistry;
 import org.w3c.dom.ls.DOMImplementationLS;

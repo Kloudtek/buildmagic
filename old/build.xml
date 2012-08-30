@@ -2,7 +2,13 @@
   ~ Copyright (c) $today.year.jGuild International Ltd
   -->
 
-<project name="BuildMagic" default="jar">
+<project name="BuildMagic" default="jar" xmlns:c="antlib:net.sf.antcontrib">
+    <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib">
+        <classpath>
+            <fileset dir="lib"/>
+        </classpath>
+    </taskdef>
+    <property name="ivy.path" value="/old/lib/ivy-2.3.0-rc1.jar"/>
     <import file="src/buildscripts/debian.xml"/>
     <import file="src/buildscripts/ivy.xml"/>
     <import file="src/buildscripts/jar.xml"/>
@@ -26,7 +32,7 @@
                       version="${version}" distributions="oneiric"/>
     </target>
 
-    <target name="install" depends="clean,init,classes">
+    <target name="deb-install" depends="clean,init,classes">
         <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
             <classpath>
                 <path location="${build.dir}/classes"/>
@@ -43,6 +49,11 @@
         <exec executable="gksu">
             <arg value="dpkg -i ${artifacts.dir}/buildmagic.deb"/>
         </exec>
+    </target>
+
+    <target name="install" depends="clean,init,classes">
+        <mkdir dir="${build.dir}/install"/>
+        <copy todir="${build.dir}/install"/>
     </target>
 
     <target name="_publish" depends="publish"/>

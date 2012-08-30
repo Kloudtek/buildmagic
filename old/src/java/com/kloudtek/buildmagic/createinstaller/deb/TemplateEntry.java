@@ -4,7 +4,6 @@
 
 package com.kloudtek.buildmagic.createinstaller.deb;
 
-import com.kloudtek.buildmagic.createinstaller.deb.scriptaction.ScriptInputAction;
 import org.apache.tools.ant.BuildException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
