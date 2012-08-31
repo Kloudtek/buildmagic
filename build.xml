@@ -1,0 +1,60 @@
+<project name="buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property name="build.dir" value="${basedir}/_build"/>
+    <property name="deps.dir" value="${basedir}/_deps"/>
+    <property name="reports.dir" value="${build.dir}/_deps"/>
+    <property name="artifacts.dir" value="${build.dir}/_deps"/>
+
+    <target name="init-ivy">
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" loaderref="ivyloader">
+            <classpath>
+                <fileset dir="lib"/>
+            </classpath>
+        </taskdef>
+        <ivy:settings file="ivysettings.xml"/>
+    </target>
+
+    <target name="deps" depends="init-ivy">
+        <ivy:resolve/>
+        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
+        <ivy:report graph="false" todir="${reports.dir}/ivy"/>
+    </target>
+
+    <target name="classes">
+        <mkdir dir="${build.dir}/classes-boostrap"/>
+        <javac destdir="${build.dir}/classes-boostrap" srcdir="src/bootstrap">
+            <classpath>
+                <fileset dir="${deps.dir}" includes="**/*.jar"/>
+            </classpath>
+        </javac>
+        <mkdir dir="${build.dir}/classes-core"/>
+        <javac destdir="${build.dir}/classes-core" srcdir="src/core">
+            <classpath>
+                <fileset dir="${deps.dir}" includes="**/*.jar"/>
+                <path location="${build.dir}/classes-boostrap"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jars" depends="classes">
+        <jar destfile="${artifacts.dir}/buildmagic-boostrap.jar">
+            <fileset dir="${build.dir}/classes-boostrap"/>
+            <fileset dir="${basedir}/src/bootstrap" excludes="**/*.java"/>
+        </jar>
+        <jar destfile="${artifacts.dir}/buildmagic-core.jar">
+            <fileset dir="${build.dir}/classes-core"/>
+            <fileset dir="${basedir}/src/core" excludes="**/*.java"/>
+        </jar>
+    </target>
+
+    <target name="dist" depends="jars">
+        <mkdir dir="${build.dir}/dist/templates"/>
+        <mkdir dir="${build.dir}/dist/lib"/>
+        <copy file="${artifacts.dir}/buildmagic-boostrap.jar" todir="${build.dir}/dist"/>
+        <copy todir="${build.dir}/dist/lib">
+            <fileset dir="${artifacts.dir}" includes="*.jar" excludes="buildmagic-boostrap.jar"/>
+        </copy>
+        <copy todir="${build.dir}/dist/templates">
+            <fileset dir="${basedir}/src/templates"/>
+        </copy>
+    </target>
+</project>

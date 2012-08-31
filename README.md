@@ -43,6 +43,10 @@ The bootstrap library must be loaded through the normal antlib loading methods, 
 
 Buildmagic will automatically find it's installed binaries if they installed under any of the following locations:
 
+- ${user.home}/buildmagic
+
+- ${user.home}/apps/buildmagic
+
 - ${ant.home}/buildmagic
 
 - /usr/share/buildmagic
@@ -52,10 +56,6 @@ Buildmagic will automatically find it's installed binaries if they installed und
 - /Library/buildmagic
 
 - C:\Program File\buildmagic
-
-- ${user.home}/buildmagic
-
-- ${user.home}/apps/buildmagic
 
 If it's not under any of the specified directories (or if you wish to use a different installation of buildmagic),
 
@@ -119,67 +119,11 @@ BuildMagic comes with a number of templates that can be used:
 
 - base
 
-It defines various extension points representing various stages of a build, which is to be used by other templates.
-
-  pre-clean
-
-  clean ( depends on pre-clean )
-
-  clean-deps ( depends on pre-clean )
-
-
-  pre-retrieve-deps ( depends on prepare )
-
-  retrieve-deps  ( depends on pre-retrieve-deps )
-
-
-  prepare
-
-  generate-sources ( depends on prepare )
-
-  pre-compile ( depends on generate-sources )
-
-  compile ( depends on pre-compile )
-
-  post-compile ( depends on compile )
-
-
-  unit-tests ( depends on post-compile )
-
-
-  reports ( depends on post-compile )
-
-
-  pre-artifacts ( depends on post-compile )
-
-  artifacts ( depends on pre-artifacts )
-
-  pre-dist ( depends on artifacts )
-
-  dist ( depends on pre-dist )
-
-
-  publish ( depends on artifacts and dist )
-
-  install ( depends on artifacts and dist )
-
-It will also set the following properties:
-
-  build.dir=${basedir}/_build
-
-  reports.dir=${build.dir}/reports
-
-  artifacts.dir=${build.dir}/reports
-
-  deps.dir=${basedir}/_deps
+Defines various standards properties, extension points and paths for use by other templates.
 
 - ivy
 
 This template will enable the use of ivy for the project.
-
-- simple-base
-
-This template is automatically imported by most other "simple" templates below
 
 - simple-java
 

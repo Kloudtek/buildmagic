@@ -1,0 +1,3 @@
+<antlib>
+    <typedef classname="com.kloudtek.buildmagic.TemplateTask" name='template'/>
+</antlib>
