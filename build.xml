@@ -10,7 +10,7 @@
                 <fileset dir="lib"/>
             </classpath>
         </taskdef>
-        <ivy:settings file="ivysettings.xml"/>
+        <ivy:settings url="http://s3.amazonaws.com/ivy.kloudtek.com/ivysettings.xml"/>
     </target>
 
     <target name="deps" depends="init-ivy">

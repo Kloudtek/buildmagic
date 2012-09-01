@@ -2,7 +2,7 @@
   ~ Copyright (c) $today.year.jGuild International Ltd
   -->
 
-<project name="BuildMagic" default="jar" xmlns:c="antlib:net.sf.antcontrib">
+<project name="BuildMagic" default="jar">
     <taskdef resource="net/sf/antcontrib/antlib.xml" uri="antlib:net.sf.antcontrib">
         <classpath>
             <fileset dir="lib"/>
@@ -21,7 +21,7 @@
     </target>
 
     <target name="jenkins-update-debian-changelog" depends="resolve-ivy-version" extensionOf="pre-artifacts">
-        <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
+        <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.tools.changelog.DebianChangelogTask">
             <classpath>
                 <path location="${build.dir}/classes"/>
                 <fileset dir="${deps.dir}"/>
@@ -33,7 +33,7 @@
     </target>
 
     <target name="deb-install" depends="clean,init,classes">
-        <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.changelog.DebianChangelogTask">
+        <taskdef name="debchangelog" classname="com.kloudtek.buildmagic.tools.changelog.DebianChangelogTask">
             <classpath>
                 <path location="${build.dir}/classes"/>
                 <fileset dir="${deps.dir}"/>

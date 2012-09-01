@@ -7,25 +7,31 @@
       <sourceFolder url="file://$MODULE_DIR$/src/bootstrap" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src/tools" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/old/src/java" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/old/src/test" isTestSource="true" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
-      <library>
+      <library name="tools">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/ivy-2.3.0-rc1.jar!/" />
+          <root url="file://$MODULE_DIR$/_deps/tools-jar" />
+          <root url="file://$MODULE_DIR$/_deps/tools-jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/_deps/tools-jar" recursive="false" />
       </library>
     </orderEntry>
     <orderEntry type="module-library">
-      <library>
+      <library name="build">
         <CLASSES>
-          <root url="jar://$MODULE_DIR$/_deps/build-jar/ant.jar!/" />
+          <root url="file://$MODULE_DIR$/_deps/build-jar" />
+          <root url="file://$MODULE_DIR$/_deps/build-jar" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/_deps/build-jar" recursive="false" />
       </library>
     </orderEntry>
   </component>

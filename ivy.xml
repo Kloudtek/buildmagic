@@ -13,30 +13,20 @@
     </configurations>
 
     <publications>
-        <artifact name="buildmagic-bootstrap" conf="default"/>
-        <artifact name="buildmagic-core" conf="default"/>
+        <artifact name="buildmagic-bootstrap" conf="core"/>
+        <artifact name="buildmagic-core" conf="core"/>
     </publications>
 
     <dependencies>
-        <dependency org="org.apache.ant" name="ant" rev="1.8.4" conf="build->default"/>
+        <dependency org="com.jetbrains" name="annotations" rev="10eap1052" conf="build->default"/>
+        <dependency org="org.apache" name="ant" rev="1.7.1" conf="build->default"/>
+        <dependency org="org.easymock" name="easymock" rev="2.5.1" conf="build->default"/>
+        <dependency org="org.easymock" name="easymock-classext" rev="2.4" conf="build->default"/>
+        <dependency org="org.testng" name="testng" rev="5.10" conf="build->default"/>
 
-
-        <!-- Build -->
-        <!--
-                <dependency org="org.easymock" name="easymock" rev="2.5.1" conf="build->default"/>
-                <dependency org="org.easymock" name="easymock-classext" rev="2.4" conf="build->default"/>
-                <dependency org="com.jetbrains" name="annotations" rev="latest.integration" conf="build->default"/>
-                <dependency org="org.apache" name="ant" rev="1.7.1" conf="build->default"/>
-        -->
-        <!--
-                <dependency org="org.apache" name="ivy" rev="2.2.0-rc1" conf="build->default"/>
-                <dependency org="org.testng" name="testng" rev="5.10" conf="build->default"/>
-        -->
-        <!-- Runtime -->
-        <!--
-                <dependency org="org.apache" name="commons-io" rev="latest.release" conf="default"/>
-                <dependency org="org.apache" name="commons-compress" rev="1.0" conf="default"/>
-                <dependency org="org.apache" name="xerces" rev="2.9+" conf="default"/>
-        -->
+        <dependency org="org.apache" name="ant" rev="1.8.1" conf="build->default"/>
+        <dependency org="org.apache" name="commons-io" rev="2.4" conf="tools->default"/>
+        <dependency org="org.apache" name="commons-compress" rev="1.0" conf="tools->default"/>
+        <dependency org="org.apache" name="xerces" rev="2.9.1" conf="tools->default"/>
     </dependencies>
 </ivy-module>
