@@ -15,16 +15,16 @@ import static java.io.File.separator;
 /**
  * Import a buildmagic template.
  */
-public class TemplateTask extends Task {
+public class ModuleTask extends Task {
     private String name;
 
     @Override
     public void execute() throws BuildException {
-        String loadedId = "buildmagic.templates.loaded." + name;
+        String loadedId = "buildmagic.modules.loaded." + name;
         Project p = getProject();
         String loaded = p.getProperty(loadedId);
         String bmhome = p.getProperty(BMHOME);
-        String path = bmhome + separator + "templates" + separator + name + separator + name + ".xml";
+        String path = bmhome + separator + "modules" + separator + name + separator + name + ".xml";
         ImportTask importTask = new ImportTask();
         importTask.setOwningTarget(getOwningTarget());
         importTask.setLocation(getLocation());
@@ -32,7 +32,7 @@ public class TemplateTask extends Task {
         importTask.setFile(path);
         importTask.execute();
         if (loaded != null && loaded.equals("true")) {
-            log("Skipping template, already loaded: " + name, Project.MSG_DEBUG);
+            log("Skipping modules, already loaded: " + name, Project.MSG_DEBUG);
         }
         p.setProperty(loadedId, "true");
     }

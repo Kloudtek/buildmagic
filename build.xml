@@ -60,15 +60,15 @@
     </target>
 
     <target name="dist" depends="jars">
-        <mkdir dir="${build.dir}/dist/templates"/>
+        <mkdir dir="${build.dir}/dist/modules"/>
         <mkdir dir="${build.dir}/dist/lib"/>
         <copy file="${artifacts.dir}/buildmagic-boostrap.jar" todir="${build.dir}/dist"/>
         <copy todir="${build.dir}/dist/lib" flatten="true">
             <fileset dir="${artifacts.dir}" includes="*.jar" excludes="buildmagic-boostrap.jar"/>
             <fileset dir="${deps.dir}" includes="tools-jar/*.jar"/>
         </copy>
-        <copy todir="${build.dir}/dist/templates">
-            <fileset dir="${basedir}/src/templates"/>
+        <copy todir="${build.dir}/dist/modules">
+            <fileset dir="${basedir}/src/modules"/>
         </copy>
     </target>
 
@@ -82,8 +82,8 @@
                  priority="extra">
             <tarfileset prefix="/usr/share/buildmagic" dir="${build.dir}/dist"/>
             <description
-                    short="This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.">
-                <![CDATA[This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.]]></description>
+                    short="This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build modules, as well as providing powerful new tasks.">
+                <![CDATA[This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build modules, as well as providing powerful new tasks.]]></description>
             <control>
                 <field name="Maintainer" value="Kloudtek Maintainer &lt;info@kloudtek.com&gt;"/>
             </control>

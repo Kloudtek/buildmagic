@@ -93,9 +93,9 @@ If any of the following ivy settings files is found, load it using ivy's setting
 
   /etc/buildmagic/ivysettings.xml
 
-4) Ant Templates
+4) Ant Modules
 
-Buildmagic's ant templates are built on ant's import capabilities. In order to use it, you must use the template task.
+Buildmagic's ant modules are built on ant's import capabilities. In order to use it, you must use the modules task.
 
 Templates can either be simple (a single ant build script), or composite (an ant build script, plus various other artifacts)
 
@@ -105,15 +105,15 @@ The template ant task functions just like ant's import task, with the following 
 
   Rather than specifying the full path to the template build script, only it's name needs to be specified, and buildmagic will automatically search for it using the following patterns:
 
-    ${ant.home}/templates/[templatename]/[templatename].xml
+    ${ant.home}/modules/[templatename]/[templatename].xml
 
-    ${buildmagic.home}/templates/[templatename]/[templatename].xml
+    ${buildmagic.home}/modules/[templatename]/[templatename].xml
 
   Alternatively it's possible to specify a specific directory using the 'dir' attribute of the template task.
 
-5) Built-in templates
+5) Built-in modules
 
-BuildMagic comes with a number of templates that can be used:
+BuildMagic comes with a number of modules that can be used:
 
 - base
 
@@ -121,14 +121,14 @@ Defines various standards properties, extension points and paths for use by othe
 
 - ivy
 
-This template will enable the use of ivy for the project.
+This modules will enable the use of ivy for the project.
 
 - simple-java
 
-Simple template to compile java code
+Simple modules to compile java code
 
 - simple-jar
 
-Simple template to generate a jar file
+Simple modules to generate a jar file
 
 Provides various tools to generate debian packages
