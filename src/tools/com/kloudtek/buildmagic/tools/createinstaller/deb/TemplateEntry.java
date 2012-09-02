@@ -1,12 +1,11 @@
 /*
- * Copyright (c) $today.year.jGuild International Ltd
+ * Copyright (c) KloudTek Ltd 2012.
  */
 
 package com.kloudtek.buildmagic.tools.createinstaller.deb;
 
 import org.apache.tools.ant.BuildException;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 /**
  * Represents a debconf template entry
@@ -113,21 +112,6 @@ public class TemplateEntry {
 
     public void setLongDesc(final String longDesc) {
         this.longDesc = longDesc;
-    }
-
-    @Nullable
-    public static String getId(final ScriptAction action, String id) {
-        if (id == null) {
-            if (action.stage != null) {
-                id = action.stage;
-            } else {
-                return null;
-            }
-        }
-        if (!id.contains("/")) {
-            id = action.getDebScript().getTask().getName() + "/" + id;
-        }
-        return id;
     }
 
     public enum Type {

@@ -8,7 +8,7 @@
         <property name="ivy.path" value="/usr/share/java/ivy.jar"/>
         <path id="cp.ivy" location="${ivy.path}"/>
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"
-                loaderref="ivyloader">
+                 loaderref="ivyloader">
             <classpath>
                 <path refid="cp.ivy"/>
                 <path refid="cp.httpclient"/>

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) KloudTek Ltd 2012.
+ */
+
 package com.kloudtek.buildmagic;
 
 import org.apache.tools.ant.BuildException;
@@ -7,8 +11,6 @@ import org.apache.tools.ant.taskdefs.Taskdef;
 import org.apache.tools.ant.types.Path;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.List;
 
 import static java.io.File.separator;
 
@@ -45,22 +47,26 @@ public class InitTask extends Task {
     }
 
     private String locateHome() {
+        return findFile(BMHOME, "${user.home}/buildmagic", "${user.home}/apps/buildmagic", "${ant.home}/buildmagic",
+                "/usr/share/buildmagic", "/opt/buildmagic", "/Library/buildmagic", "C:\\Program File\\buildmagic");
+    }
+
+    private String findFile(String propertyName, String... directories) {
         Project p = getProject();
-        String override = getProject().getProperty(BMHOME);
-        if (override != null && !override.isEmpty()) {
-            if (!new File(override).exists()) {
-                throw new BuildException("buildmagic home does not exist: " + override);
+        String value = getProject().getProperty(propertyName);
+        if (value != null && !value.isEmpty()) {
+            if (!new File(value).exists()) {
+                throw new BuildException(propertyName + " directory " + value + " does not exist");
             }
-            return override;
+            return value;
         }
-        String uhome = p.getProperty("user.home");
-        List<String> paths = Arrays.asList(p.getProperty("buildmagic.home"), uhome + "/buildmagic",
-                uhome + "/apps/buildmagic", p.getProperty("ant.home") + "/buildmagic", "/usr/share/buildmagica",
-                "/opt/buildmagic", "/Library/buildmagic", "C:\\Program File\\buildmagic");
-        for (String path : paths) {
-            if (path != null && !path.isEmpty() && new File(path).exists()) {
-                getProject().setProperty(BMHOME, path);
-                return path;
+        if (directories != null) {
+            for (String dir : directories) {
+                dir = getProject().replaceProperties(dir);
+                if (dir != null && !dir.isEmpty() && new File(dir).exists()) {
+                    getProject().setProperty(propertyName, dir);
+                    return dir;
+                }
             }
         }
         return null;

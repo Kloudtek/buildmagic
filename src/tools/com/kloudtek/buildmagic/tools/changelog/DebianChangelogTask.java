@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) KloudTek Ltd 2012.
+ */
+
 package com.kloudtek.buildmagic.tools.changelog;
 
 import org.apache.commons.io.FileUtils;

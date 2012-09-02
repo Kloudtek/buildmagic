@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) KloudTek Ltd 2012.
+  -->
+
 <project name="bmsimplejava" xmlns:bm="antlib:com.kloudtek.buildmagic">
     <bm:template name="base"/>
 

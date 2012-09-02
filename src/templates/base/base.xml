@@ -1,4 +1,14 @@
+<!--
+  ~ Copyright (c) KloudTek Ltd 2012.
+  -->
+
 <project name="bmbase">
+    <taskdef uri="antlib:com.kloudtek.buildmagic.tools">
+        <classpath>
+            <fileset dir="${buildmagic.home}/lib"/>
+        </classpath>
+    </taskdef>
+
     <extension-point name="pre-clean"/>
     <extension-point name="clean" depends="pre-clean"/>
     <extension-point name="clean-deps" depends="pre-clean"/>

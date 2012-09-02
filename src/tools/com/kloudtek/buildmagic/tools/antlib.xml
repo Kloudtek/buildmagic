@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) KloudTek Ltd 2012.
+  -->
+
 <antlib>
     <typedef classname="com.kloudtek.buildmagic.tools.xml.XmlDocument" name='xmldoc'/>
     <typedef classname="com.kloudtek.buildmagic.tools.xml.XmlSerialize" name='xmlserialize'/>

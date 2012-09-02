@@ -3,9 +3,7 @@ buildmagic
 
 1) Overview
 
-Buildmagic is an extension to the ant build system designed to facilitate the creation and distribution of
-
-re-usable build templates, as well as providing powerful new tasks.
+Buildmagic is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.
 
 2) Installation
 

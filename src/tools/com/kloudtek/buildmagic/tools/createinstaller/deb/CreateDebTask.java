@@ -1,5 +1,5 @@
 /*
- * Copyright (c) $today.year.jGuild International Ltd
+ * Copyright (c) KloudTek Ltd 2012.
  */
 
 package com.kloudtek.buildmagic.tools.createinstaller.deb;
@@ -13,6 +13,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.tools.ant.BuildException;
+import org.apache.tools.ant.Project;
 import org.apache.tools.ant.Task;
 import org.apache.tools.ant.types.*;
 import org.jetbrains.annotations.NotNull;
@@ -29,10 +30,12 @@ public class CreateDebTask extends Task {
     private File destfile;
     private String name;
     private String version;
+    private String section = "misc";
+    private String priority = "extra";
+    private String depends = "";
     private String arch = "all";
     private static final byte[] DEBVERSION = "2.0\n".getBytes();
     private static final List<String> PRIORITIES = Arrays.asList("required", "important", "standard", "optional", "extra");
-    private static final List<String> SECTIONS = Arrays.asList("admin", "cli-mono", "comm", "database", "devel", "debug", "doc", "editors", "electronics", "embedded", "fonts", "games", "gnome", "graphics", "gnu-r", "gnustep", "hamradio", "haskell", "httpd", "interpreters", "java", "kde", "kernel", "libs", "libdevel", "lisp", "localization", "mail", "math", "misc", "net", "news", "ocaml", "oldlibs", "otherosfs", "perl", "php", "python", "ruby", "science", "shells", "sound", "tex", "text", "utils", "vcs", "video", "web", "x11", "xfce", "zope");
     private ArrayList<TemplateEntry> templateEntries = new ArrayList<TemplateEntry>();
 
     @SuppressWarnings({"UnusedDeclaration"})
@@ -56,12 +59,27 @@ public class CreateDebTask extends Task {
     }
 
     @SuppressWarnings({"UnusedDeclaration"})
+    public void setSection(String section) {
+        this.section = section;
+    }
+
+    @SuppressWarnings({"UnusedDeclaration"})
+    public void setPriority(String priority) {
+        this.priority = priority;
+    }
+
+    @SuppressWarnings({"UnusedDeclaration"})
+    public void setDepends(String depends) {
+        this.depends = depends;
+    }
+
+    @SuppressWarnings({"UnusedDeclaration"})
     public void addFileset(final FileSet set) {
         add(set);
     }
 
     @SuppressWarnings({"UnusedDeclaration"})
-    public void addDebFileset(final DebFileSet set) {
+    public void addTarFileset(final TarFileSet set) {
         add(set);
     }
 
@@ -72,6 +90,11 @@ public class CreateDebTask extends Task {
 
     @SuppressWarnings({"UnusedDeclaration"})
     public void addZipfileset(final ZipFileSet set) {
+        add(set);
+    }
+
+    @SuppressWarnings({"UnusedDeclaration"})
+    public void addSymlink(final DebSymlink set) {
         add(set);
     }
 
@@ -127,28 +150,15 @@ public class CreateDebTask extends Task {
         if (arch == null || arch.length() == 0) {
             throw new BuildException("arch attribute is missing or invalid");
         }
+        if (priority != null && !PRIORITIES.contains(priority.toLowerCase())) {
+            log("Priority '" + priority + "' isn't recognized as a valid value", Project.MSG_WARN);
+        }
         if (control != null) {
             for (final TemplateEntry entry : control.getTemplateEntries()) {
                 if (entry.getPackageName() == null) {
                     entry.setPackageName(name);
                 }
                 templateEntries.add(entry);
-            }
-            // initialise all script actions
-            for (final DebScript script : control.getScripts()) {
-                script.init();
-            }
-            // getting templates from script actions that supports generating them
-            for (final DebScript script : control.getScripts()) {
-                for (final ScriptAction scriptAction : script.getScriptActions()) {
-                    final Collection<? extends TemplateEntry> entries = scriptAction.generateTemplateEntries();
-                    if (entries != null && !entries.isEmpty()) {
-                        templateEntries.addAll(entries);
-                    }
-                }
-            }
-            for (final DebScript script : control.getScripts()) {
-                script.process();
             }
         }
     }
@@ -185,18 +195,7 @@ public class CreateDebTask extends Task {
             final TarArchiveOutputStream data = new TarArchiveOutputStream(new GZIPOutputStream(dataBuffer));
             data.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
             writeData(data, generateControlFile());
-            // TODO: check the scripts haven't already been generated
             if (control != null) {
-                final DebScript preInst = control.getScript("preinst");
-                final DebScript postInst = control.getScript("postinst");
-                final DebScript postRmScript = control.getScript("postrm");
-                if (control.isPurge() && !templateEntries.isEmpty()) {
-                    postRmScript.addStageLine(DebScript.MAIN, "if action == 'purge':");
-                    postRmScript.addStageLine(DebScript.MAIN, "    db.purge()");
-                }
-                writeScript(preInst, data);
-                writeScript(postInst, data);
-                writeScript(postRmScript, data);
                 addResourcesToTar(data, control.getResources());
             }
             if (!templateEntries.isEmpty()) {
@@ -276,32 +275,23 @@ public class CreateDebTask extends Task {
                 final String user;
                 final String group;
                 Integer filemode = null;
-                if (rsCol instanceof DebFileSet) {
-                    user = ((DebFileSet) rsCol).getUser();
-                    group = ((DebFileSet) rsCol).getGroup();
-                    final String filemodeStr = ((DebFileSet) rsCol).getFilemode();
-                    if (filemodeStr != null) {
-                        filemode = Integer.valueOf(filemodeStr);
-                    }
+                Integer dirmode = null;
+                if (rsCol instanceof TarFileSet) {
+                    TarFileSet tarSet = (TarFileSet) rsCol;
+                    user = tarSet.getUserName();
+                    group = tarSet.getGroup();
+                    filemode = tarSet.getFileMode(getProject());
+                    dirmode = tarSet.getDirMode(getProject());
+                } else if (rsCol instanceof DebSymlink) {
+                    ArchiveHelper.writeTarSymlinkEntry(data, filename, ((DebSymlink) rsCol).getResource());
+                    continue;
                 } else {
                     user = null;
                     group = null;
                 }
-                ArchiveHelper.createTarParentDirs(dataParentDirs, data, filename, user, group, filemode);
+                ArchiveHelper.createTarParentDirs(dataParentDirs, data, filename, user, group, dirmode);
                 ArchiveHelper.writeTarEntry(data, rs, filename, user, group, filemode);
             }
-        }
-    }
-
-    @SuppressWarnings({"unchecked"})
-    private void writeScript(final DebScript script, final TarArchiveOutputStream stream) throws IOException {
-        if (!script.isScriptEmpty()) {
-            final byte[] scriptData = script.generate();
-            final TarArchiveEntry entry = new TarArchiveEntry(script.getName());
-            entry.setSize(scriptData.length);
-            stream.putArchiveEntry(entry);
-            stream.write(scriptData);
-            stream.closeArchiveEntry();
         }
     }
 
@@ -329,6 +319,8 @@ public class CreateDebTask extends Task {
         attrs.put("Package", name);
         attrs.put("Version", version);
         attrs.put("Architecture", arch);
+        attrs.put("Section", section);
+        attrs.put("Priority", priority);
         if (!attrs.containsKey("Installed-Size")) {
             int totalSize = 0;
             for (final ResourceCollection rsCol : resources) {

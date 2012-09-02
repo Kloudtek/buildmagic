@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) $today.year.jGuild International Ltd
+  ~ Copyright (c) KloudTek Ltd 2012.
   -->
 
 <weblogic-ejb-jar xmlns="http://www.bea.com/ns/weblogic/90" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"

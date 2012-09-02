@@ -1,8 +1,8 @@
-<project name="jenkins-debian"  xmlns:bm="antlib:com.kloudtek.buildmagic">
+<project name="jenkins-debian" xmlns:bm="antlib:com.kloudtek.buildmagic">
     <import file="core.xml"/>
     <target name="update-changelog" depends="resolve-ivy-version,load-baseantlibs" extensionOf="pre-artifacts">
         <bm:debchangelog projectname="${projectname}" src="../lastSuccessful/changelog.xml" type="jenkinsgit"
-                      maintainerName="Kloudtek Maintainers" maintainerEmail="info@kloudtek.com"
-                      version="${version}" distributions="oneiric"/>
+                         maintainerName="Kloudtek Maintainers" maintainerEmail="info@kloudtek.com"
+                         version="${version}" distributions="oneiric"/>
     </target>
 </project>

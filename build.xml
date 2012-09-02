@@ -1,8 +1,9 @@
-<project name="buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant">
+<project name="buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:bmt="antlib:com.kloudtek.buildmagic.tools">
     <property name="build.dir" value="${basedir}/_build"/>
     <property name="deps.dir" value="${basedir}/_deps"/>
     <property name="reports.dir" value="${build.dir}/_deps"/>
-    <property name="artifacts.dir" value="${build.dir}/_deps"/>
+    <property name="artifacts.dir" value="${build.dir}/artifacts"/>
+    <property name="version" value="0.0~dev"/>
 
     <target name="init-ivy">
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" loaderref="ivyloader">
@@ -33,6 +34,14 @@
                 <path location="${build.dir}/classes-boostrap"/>
             </classpath>
         </javac>
+        <mkdir dir="${build.dir}/classes-tools"/>
+        <javac destdir="${build.dir}/classes-tools" srcdir="src/tools">
+            <classpath>
+                <fileset dir="${deps.dir}" includes="**/*.jar"/>
+                <path location="${build.dir}/classes-core"/>
+                <path location="${build.dir}/classes-boostrap"/>
+            </classpath>
+        </javac>
     </target>
 
     <target name="jars" depends="classes">
@@ -44,17 +53,40 @@
             <fileset dir="${build.dir}/classes-core"/>
             <fileset dir="${basedir}/src/core" excludes="**/*.java"/>
         </jar>
+        <jar destfile="${artifacts.dir}/buildmagic-tools.jar">
+            <fileset dir="${build.dir}/classes-tools"/>
+            <fileset dir="${basedir}/src/tools" excludes="**/*.java"/>
+        </jar>
     </target>
 
     <target name="dist" depends="jars">
         <mkdir dir="${build.dir}/dist/templates"/>
         <mkdir dir="${build.dir}/dist/lib"/>
         <copy file="${artifacts.dir}/buildmagic-boostrap.jar" todir="${build.dir}/dist"/>
-        <copy todir="${build.dir}/dist/lib">
+        <copy todir="${build.dir}/dist/lib" flatten="true">
             <fileset dir="${artifacts.dir}" includes="*.jar" excludes="buildmagic-boostrap.jar"/>
+            <fileset dir="${deps.dir}" includes="tools-jar/*.jar"/>
         </copy>
         <copy todir="${build.dir}/dist/templates">
             <fileset dir="${basedir}/src/templates"/>
         </copy>
+    </target>
+
+    <target name="deb" depends="dist">
+        <taskdef uri="antlib:com.kloudtek.buildmagic.tools">
+            <classpath>
+                <fileset dir="${build.dir}/dist/lib"/>
+            </classpath>
+        </taskdef>
+        <bmt:deb destfile="${artifacts.dir}/buildmagic.deb" name="buildmagic" version="${version}" section="development"
+                 priority="extra">
+            <tarfileset prefix="/usr/share/buildmagic" dir="${build.dir}/dist"/>
+            <description
+                    short="This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.">
+                <![CDATA[This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.]]></description>
+            <control>
+                <field name="Maintainer" value="Kloudtek Maintainer &lt;info@kloudtek.com&gt;"/>
+            </control>
+        </bmt:deb>
     </target>
 </project>

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) KloudTek Ltd 2012.
+ */
+
 package com.kloudtek.buildmagic;
 
 import org.apache.tools.ant.BuildException;

@@ -19,7 +19,9 @@
           <root url="file://$MODULE_DIR$/_deps/tools-jar" />
         </CLASSES>
         <JAVADOC />
-        <SOURCES />
+        <SOURCES>
+          <root url="jar://$USER_HOME$/Downloads/commons-compress-1.4.1/commons-compress-sources-1.4.1.jar!/" />
+        </SOURCES>
         <jarDirectory url="file://$MODULE_DIR$/_deps/tools-jar" recursive="false" />
       </library>
     </orderEntry>

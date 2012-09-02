@@ -1,5 +1,5 @@
 /*
- * Copyright (c) $today.year.jGuild International Ltd
+ * Copyright (c) KloudTek Ltd 2012.
  */
 
 package com.kloudtek.buildmagic.tools.util;
@@ -8,6 +8,7 @@ import org.apache.commons.compress.archivers.ar.ArArchiveEntry;
 import org.apache.commons.compress.archivers.ar.ArArchiveOutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.io.IOUtils;
 import org.apache.tools.ant.types.Resource;
 
@@ -21,8 +22,17 @@ import java.util.StringTokenizer;
  * Helper class to assist with archives
  */
 public class ArchiveHelper {
-    public static TarArchiveEntry createTarArchiveEntry(final String filename, final String ownerUser, final String ownerGroup, Integer filemode) {
-        TarArchiveEntry dataEntry = new TarArchiveEntry(filename);
+    public static TarArchiveEntry createTarArchiveEntry(final String filename, final String ownerUser, final String ownerGroup, Integer filemode, String symlink) {
+        TarArchiveEntry dataEntry;
+        if (symlink != null) {
+            dataEntry = new TarArchiveEntry(filename, TarConstants.LF_SYMLINK);
+            dataEntry.setLinkName(symlink);
+        } else {
+            dataEntry = new TarArchiveEntry(filename);
+        }
+        if (filemode != null) {
+            dataEntry.setMode(filemode);
+        }
         if (ownerUser != null) {
             dataEntry.setUserName(ownerUser);
         }
@@ -43,13 +53,20 @@ public class ArchiveHelper {
 
     public static void writeTarEntry(TarArchiveOutputStream archiveOutputStream, InputStream data, long size, String filename,
                                      final String ownerUser, final String ownerGroup, final Integer filemode) throws IOException {
-        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, ownerUser, ownerGroup, filemode);
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, ownerUser, ownerGroup, filemode, null);
         dataEntry.setSize(size);
         if (filemode != null) {
             dataEntry.setMode(filemode);
         }
         archiveOutputStream.putArchiveEntry(dataEntry);
         IOUtils.copy(data, archiveOutputStream);
+        archiveOutputStream.closeArchiveEntry();
+    }
+
+    public static void writeTarSymlinkEntry(TarArchiveOutputStream archiveOutputStream, String filename, String target) throws IOException {
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, null, null, null, target);
+        dataEntry.setSize(0);
+        archiveOutputStream.putArchiveEntry(dataEntry);
         archiveOutputStream.closeArchiveEntry();
     }
 
@@ -61,7 +78,7 @@ public class ArchiveHelper {
     }
 
     public static void createTarDir(TarArchiveOutputStream data, String filename, final String ownerUser, final String ownerGroup, Integer filemode) throws IOException {
-        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, ownerUser, ownerGroup, filemode);
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, ownerUser, ownerGroup, filemode, null);
         data.putArchiveEntry(dataEntry);
         data.closeArchiveEntry();
     }

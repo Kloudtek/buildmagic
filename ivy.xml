@@ -1,7 +1,6 @@
 <!--
   ~ Copyright (c) $today.year.jGuild International Ltd
   -->
-
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
     <info organisation="com.kloudtek" module="buildmagic" branch="master" status="integration"/>
@@ -26,7 +25,7 @@
 
         <dependency org="org.apache" name="ant" rev="1.8.1" conf="build->default"/>
         <dependency org="org.apache" name="commons-io" rev="2.4" conf="tools->default"/>
-        <dependency org="org.apache" name="commons-compress" rev="1.0" conf="tools->default"/>
+        <dependency org="org.apache" name="commons-compress" rev="1.4.1" conf="tools->default"/>
         <dependency org="org.apache" name="xerces" rev="2.9.1" conf="tools->default"/>
     </dependencies>
 </ivy-module>

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) $today.year.jGuild International Ltd
+  ~ Copyright (c) KloudTek Ltd 2012.
   -->
 
 <project name="PackageDeb Tests">
@@ -60,7 +60,8 @@
 
     <target name="simple-createdeb">
         <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0">
-            <debfileset prefix="/opt/bmtest" dir="${src}" user="${user.name}" group="${user.name}" filemode="384"/>
+            <tarfileset prefix="/opt/bmtest" dir="${src}" username="${user.name}" group="${user.name}" filemode="640"
+                        dirmode="700"/>
             <description short="Test jar created to ${dest}"><![CDATA[This is a rather long description that happily
 describes what it's doing
 next a single empty line
@@ -74,39 +75,6 @@ Dest is ${dest}]]></description>
             </control>
         </deb>
         <dpkg installdir="${installdir}" deb="${workspace}/bmtest.deb"/>
-    </target>
-
-    <target name="complex-createdeb">
-        <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0">
-            <description short="Test jar created to ${dest}"/>
-            <control depends="java-sdk">
-                <field name="Maintainer" value="Me &lt;myself@moi&gt;"/>
-                <template id='skiptoend' type='boolean' shortDesc='Skip to the end?'/>
-                <template id='skipquestion1' type='boolean' shortDesc='Skip hot question?'/>
-                <template id='somequestion1' type='string' shortDesc='Is the sun hot ?'
-                          longDesc='Sun really really hot ?'/>
-                <template id='somequestion2' type='string' shortDesc='Is the sun cold ?'
-                          longDesc='Sun really really cold ?'/>
-                <script name='preinst' actions='install'>
-                    <import pkg='tempfile'/>
-                    <confirmlicense id="gl" name="Great License (GL)">Confirm this to proceed</confirmlicense>
-                    <createuser username="bmtest"/>
-                    <input stage="skiptoend" priority='critical'>
-                        <gotostage eq='true' dest="end"/>
-                    </input>
-                    <input stage="skipquestion1" priority='critical' id="skipquestion1">
-                        <gotostage eq='true' dest="question2"/>
-                    </input>
-                    <line stage='question1'>db.reset('bmtest/somequestion1')</line>
-                    <line stage='question1'>db.input(debconf.HIGH, 'bmtest/somequestion1')</line>
-                    <input stage='question2' priority='critical' id='somequestion2' var="q2"/>
-                    <validation test="vars.q2 != 'no'" failStage="question2"
-                                title="You must be kidding" description="The sun is mildly warm you idiot !"/>
-                </script>
-            </control>
-            <debfileset prefix="/opt/bmtest" dir="${src}" user="${user.name}" group="${user.name}"/>
-        </deb>
-        <su-dpkg installdir="${installdir}" deb="${workspace}/bmtest.deb"/>
     </target>
 
     <target name="uninstall">

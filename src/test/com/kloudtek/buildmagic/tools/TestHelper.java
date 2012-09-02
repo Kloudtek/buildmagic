@@ -1,5 +1,5 @@
 /*
- * Copyright (c) $today.year.jGuild International Ltd
+ * Copyright (c) KloudTek Ltd 2012.
  */
 
 package com.kloudtek.buildmagic.tools;
@@ -20,7 +20,7 @@ import java.util.zip.CRC32;
 import static org.testng.Assert.assertEquals;
 
 public class TestHelper {
-    private static final String BASE = "/com/kloudtek/buildmagic/";
+    private static final String BASE = "/com/kloudtek/buildmagic/tools/";
     private static CRC32 crc;
     private static File[] list1;
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) $today.year.jGuild International Ltd
+ * Copyright (c) KloudTek Ltd 2012.
  */
 
 package com.kloudtek.buildmagic.tools.reconfigure;

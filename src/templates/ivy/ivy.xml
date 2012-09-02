@@ -1,0 +1,67 @@
+<!--
+  ~ Copyright (c) KloudTek Ltd 2012.
+  -->
+
+<project name="bmivy" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:c="antlib:net.sf.antcontrib">
+    <import file="core.xml"/>
+    <target name="clean-deps">
+        <delete dir="${deps.dir}"/>
+    </target>
+
+    <target name="init-ivy" depends="load-baseantlibs">
+        <property name="ivy.path" value="/usr/share/java/ivy.jar"/>
+        <path id="cp.ivy" location="${ivy.path}"/>
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant"
+                 loaderref="ivyloader">
+            <classpath>
+                <fileset dir="${buildmagic.home}"
+            </classpath>
+        </taskdef>
+        <property name="deps.dir" value="${basedir}/_deps"/>
+        <c:if>
+            <available file="${user.home}/.bm.ivysettings.xml"/>
+            <then>
+                <echo>Loading Ivy Settings file: ${user.home}/.bm.ivysettings.xml</echo>
+                <ivy:settings file="${user.home}/.bm.ivysettings.xml"/>
+            </then>
+            <else>
+                <ivy:settings/>
+            </else>
+        </c:if>
+        <ivy:info/>
+        <property name="projectname" value="${ivy.module}"/>
+    </target>
+
+    <target name="deps" depends="init,init-ivy">
+        <ivy:resolve/>
+        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
+        <ivy:report graph="false" todir="${reports.dir}/ivy"/>
+    </target>
+
+    <target name="resolve-ivy-version" depends="init-ivy" extensionOf="init">
+        <c:if>
+            <not>
+                <isset property="version"/>
+            </not>
+            <then>
+                <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" default="${ivy.revision}"/>
+                <property name="version" value="${ivy.new.revision}"/>
+            </then>
+        </c:if>
+        <echo>Ivy New Revision: ${version}</echo>
+        <c:if>
+            <isset property="ivy.status"/>
+            <then>
+                <property name="reltype" value="${ivy.status}"/>
+            </then>
+        </c:if>
+        <echo>Ivy Status: ${reltype}</echo>
+    </target>
+
+    <target name="publish-ivy" depends="init-ivy,resolve-ivy-version" extensionOf="publish">
+        <property name="publishresolver" value="default"/>
+        <ivy:publish resolver="${publishresolver}" pubrevision="${version}" status="${reltype}"
+                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"
+                     forcedeliver="true"/>
+    </target>
+</project>

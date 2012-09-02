@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) KloudTek Ltd 2012.
+  -->
+
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
 
 <suite name="BuildMagic" verbose="1">

@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) $today.year.jGuild International Ltd
+  ~ Copyright (c) KloudTek Ltd 2012.
   -->
 
 <project name="Test Reconfigure" xmlns:bm="antlib:com.kloudtek.buildmagic">
