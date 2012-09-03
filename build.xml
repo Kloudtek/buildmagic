@@ -64,8 +64,10 @@
         <mkdir dir="${build.dir}/dist/lib"/>
         <copy file="${artifacts.dir}/buildmagic-boostrap.jar" todir="${build.dir}/dist"/>
         <copy todir="${build.dir}/dist/lib" flatten="true">
+            <fileset dir="lib" includes="*.jar"/>
             <fileset dir="${artifacts.dir}" includes="*.jar" excludes="buildmagic-boostrap.jar"/>
             <fileset dir="${deps.dir}" includes="tools-jar/*.jar"/>
+            <fileset dir="${deps.dir}" includes="core-jar/*.jar"/>
         </copy>
         <copy todir="${build.dir}/dist/modules">
             <fileset dir="${basedir}/src/modules"/>

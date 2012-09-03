@@ -20,6 +20,7 @@ import static java.io.File.separator;
 public class InitTask extends Task {
     public static final String BMHOME = "buildmagic.home";
     public static final String BMRDY = "buildmagic.init.done";
+    private String ivy = "${basedir}/ivy.xml";
 
     @SuppressWarnings("unchecked")
     @Override
@@ -32,10 +33,12 @@ public class InitTask extends Task {
             }
             p.setUserProperty(BMHOME, new File(home).getAbsolutePath());
             log("buildmagic home: " + home);
-            Taskdef loadCoreTaskDef = new Taskdef();
+            // Load core module
+            Path coreClasspath = getBMCoreCLPath(home);
+            Taskdef loadCoreTaskDef = (Taskdef) getProject().createTask("taskdef");
             loadCoreTaskDef.setResource("com/kloudtek/buildmagic/antlib-core.xml");
             loadCoreTaskDef.setURI("antlib:com.kloudtek.buildmagic");
-            loadCoreTaskDef.setClasspath(getBMCoreCLPath(home));
+            loadCoreTaskDef.setClasspath(coreClasspath);
             loadCoreTaskDef.setProject(p);
             loadCoreTaskDef.execute();
             p.setProperty(BMRDY, "true");

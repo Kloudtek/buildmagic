@@ -21,8 +21,8 @@ In order to be able to use buildmagic, the first step is to add both the buildma
 
 ie:
 
-<project name="My Project" xmlns:bmc="antlib:com.kloudtek.buildmagic">
-  <bmc:init/>
+<project name="My Project" xmlns:bm="antlib:com.kloudtek.buildmagic">
+  <bm:init/>
 </project>
 
 In order to run, buildmagic must be able to locate it's bootstrap library, and the buildmagic distribution.

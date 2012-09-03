@@ -11,10 +11,12 @@
     </taskdef>
     <property name="buildmagic.home" value="../../_build/dist"/>
     <bm:init/>
-    <bm:template name="simple-java"/>
-    <bm:template name="base"/>
+    <bm:module name="simple-java"/>
+    <bm:module name="base"/>
+    <bm:module name="ivy"/>
     <target name="test">
         <antcall target="clean"/>
+        <antcall target="retrieve-deps"/>
         <antcall target="artifacts"/>
     </target>
 </project>

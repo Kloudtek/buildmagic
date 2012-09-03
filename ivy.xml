@@ -23,6 +23,9 @@
         <dependency org="org.easymock" name="easymock-classext" rev="2.4" conf="build->default"/>
         <dependency org="org.testng" name="testng" rev="5.10" conf="build->default"/>
 
+        <dependency org="net.sourceforge" name="ant-contrib" rev="1.0b3" conf="core->default"/>
+        <dependency org="com.jcraft" name="jsch" rev="0.1.43" conf="core->default"/>
+
         <dependency org="org.apache" name="ant" rev="1.8.1" conf="build->default"/>
         <dependency org="org.apache" name="commons-io" rev="2.4" conf="tools->default"/>
         <dependency org="org.apache" name="commons-compress" rev="1.4.1" conf="tools->default"/>

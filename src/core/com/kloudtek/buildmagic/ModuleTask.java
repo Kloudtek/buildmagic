@@ -25,7 +25,7 @@ public class ModuleTask extends Task {
         String loaded = p.getProperty(loadedId);
         String bmhome = p.getProperty(BMHOME);
         String path = bmhome + separator + "modules" + separator + name + separator + name + ".xml";
-        ImportTask importTask = new ImportTask();
+        ImportTask importTask = (ImportTask) p.createTask("import");
         importTask.setOwningTarget(getOwningTarget());
         importTask.setLocation(getLocation());
         importTask.setProject(p);
