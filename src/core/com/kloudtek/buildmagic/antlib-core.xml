@@ -3,5 +3,5 @@
   -->
 
 <antlib>
-    <typedef classname="com.kloudtek.buildmagic.ModuleTask" name='module'/>
+    <typedef classname="com.kloudtek.buildmagic.TemplateTask" name='template'/>
 </antlib>

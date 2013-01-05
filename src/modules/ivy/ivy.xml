@@ -4,7 +4,7 @@
 
 <project name="bmivy" xmlns:bm="antlib:com.kloudtek.buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant"
          xmlns:c="antlib:net.sf.antcontrib">
-    <bm:module name="base"/>
+    <bm:template name="base"/>
 
     <target name="clean-deps">
         <delete dir="${deps.dir}"/>
