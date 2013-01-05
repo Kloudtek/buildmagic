@@ -1,1 +1,2 @@
 This application is licensed under the LGPL v3: http://www.gnu.org/licenses/lgpl-3.0.txt
+Public License can be found in `/usr/share/common-licenses/GPL'.

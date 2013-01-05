@@ -4,9 +4,11 @@
 
 package com.kloudtek.buildmagic.tools.createinstaller.deb;
 
+import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.types.ResourceCollection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class Control {
     private final ArrayList<Field> fields = new ArrayList<Field>();
@@ -79,6 +81,19 @@ public class Control {
 
     public ArrayList<TemplateEntry> getTemplateEntries() {
         return templateEntries;
+    }
+
+    public boolean hasChangeLog() {
+        for (ResourceCollection resource : resources) {
+            Iterator i = resource.iterator();
+            while (i.hasNext()) {
+                final Resource rs = (Resource) i.next();
+                if (rs.getName().equalsIgnoreCase("changelog")) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     public class Field {

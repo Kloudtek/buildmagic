@@ -192,7 +192,7 @@ public class ReconfigureTask extends Task {
                         if (fileAction.isStrict() == null) {
                             fileAction.setStrict(strict);
                         }
-                        fileAction.execute(preProcessBuffer.getDataInputStream(), postProcessBuffer);
+                        fileAction.execute(preProcessBuffer.createDataInputStream(), postProcessBuffer);
                         preProcessBuffer.clear();
                         postProcessBuffer.close();
                         preProcessBuffer = postProcessBuffer;

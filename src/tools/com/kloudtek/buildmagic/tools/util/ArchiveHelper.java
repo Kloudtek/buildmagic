@@ -10,7 +10,6 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.archivers.tar.TarConstants;
 import org.apache.commons.io.IOUtils;
-import org.apache.tools.ant.types.Resource;
 
 import java.io.File;
 import java.io.IOException;
@@ -22,11 +21,10 @@ import java.util.StringTokenizer;
  * Helper class to assist with archives
  */
 public class ArchiveHelper {
-    public static TarArchiveEntry createTarArchiveEntry(final String filename, final String ownerUser, final String ownerGroup, Integer filemode, String symlink) {
+    public static TarArchiveEntry createTarArchiveEntry(final String filename, final String ownerUser, final String ownerGroup, Integer filemode, Byte linkFlag) {
         TarArchiveEntry dataEntry;
-        if (symlink != null) {
-            dataEntry = new TarArchiveEntry(filename, TarConstants.LF_SYMLINK);
-            dataEntry.setLinkName(symlink);
+        if (linkFlag != null) {
+            dataEntry = new TarArchiveEntry(filename, linkFlag);
         } else {
             dataEntry = new TarArchiveEntry(filename);
         }
@@ -42,48 +40,63 @@ public class ArchiveHelper {
         return dataEntry;
     }
 
-
-    public static void writeDataBufferToAr(ArArchiveOutputStream debFile, DataBuffer dataBuffer, String archiveName) throws IOException {
-        final ArArchiveEntry entry = new ArArchiveEntry(archiveName, dataBuffer.getSize());
-        debFile.putArchiveEntry(entry);
-        dataBuffer.writeTo(debFile);
-        debFile.closeArchiveEntry();
-        dataBuffer.clear();
+    public static void write(ArArchiveOutputStream archiveStream, byte[] data, String filename) throws IOException {
+        final ArArchiveEntry entry = new ArArchiveEntry(filename, data.length);
+        archiveStream.putArchiveEntry(entry);
+        archiveStream.write(data);
+        archiveStream.closeArchiveEntry();
     }
 
-    public static void writeTarEntry(TarArchiveOutputStream archiveOutputStream, InputStream data, long size, String filename,
-                                     final String ownerUser, final String ownerGroup, final Integer filemode) throws IOException {
+    public static void write(ArArchiveOutputStream archiveStream, DataBuffer dataBuffer, String filename) throws IOException {
+        final ArArchiveEntry entry = new ArArchiveEntry(filename, dataBuffer.getSize());
+        archiveStream.putArchiveEntry(entry);
+        dataBuffer.writeTo(archiveStream);
+        archiveStream.closeArchiveEntry();
+    }
+
+    public static void write(TarArchiveOutputStream archiveStream, byte[] data, String filename) throws IOException {
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, null, null, null, null);
+        dataEntry.setSize(data.length);
+        archiveStream.putArchiveEntry(dataEntry);
+        archiveStream.write(data);
+        archiveStream.closeArchiveEntry();
+    }
+
+    public static void write(TarArchiveOutputStream archiveStream, DataBuffer dataBuffer, String filename) throws IOException {
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, null, null, null, null);
+        dataEntry.setSize(dataBuffer.getSize());
+        archiveStream.putArchiveEntry(dataEntry);
+        dataBuffer.writeTo(archiveStream);
+        archiveStream.closeArchiveEntry();
+    }
+
+    public static void write(TarArchiveOutputStream archiveStream, InputStream data, long size, String filename,
+                             final String ownerUser, final String ownerGroup, final Integer filemode) throws IOException {
         TarArchiveEntry dataEntry = createTarArchiveEntry(filename, ownerUser, ownerGroup, filemode, null);
         dataEntry.setSize(size);
         if (filemode != null) {
             dataEntry.setMode(filemode);
         }
-        archiveOutputStream.putArchiveEntry(dataEntry);
-        IOUtils.copy(data, archiveOutputStream);
-        archiveOutputStream.closeArchiveEntry();
+        archiveStream.putArchiveEntry(dataEntry);
+        IOUtils.copy(data, archiveStream);
+        archiveStream.closeArchiveEntry();
     }
 
-    public static void writeTarSymlinkEntry(TarArchiveOutputStream archiveOutputStream, String filename, String target) throws IOException {
-        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, null, null, null, target);
+    public static void createDir(TarArchiveOutputStream data, String filename, final String ownerUser, final String ownerGroup, Integer filemode) throws IOException {
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename + "/", ownerUser, ownerGroup, filemode, TarConstants.LF_DIR);
+        data.putArchiveEntry(dataEntry);
+        data.closeArchiveEntry();
+    }
+
+    public static void createSymlink(TarArchiveOutputStream archiveOutputStream, String filename, String target) throws IOException {
+        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, null, null, null, TarConstants.LF_SYMLINK);
+        dataEntry.setLinkName(target);
         dataEntry.setSize(0);
         archiveOutputStream.putArchiveEntry(dataEntry);
         archiveOutputStream.closeArchiveEntry();
     }
 
-    public static void writeTarEntry(TarArchiveOutputStream archiveOutputStream, Resource rs, String filename,
-                                     final String owner, final String ownerGroup, Integer filemode) throws IOException {
-        final InputStream inputStream = rs.getInputStream();
-        writeTarEntry(archiveOutputStream, inputStream, rs.getSize(), filename, owner, ownerGroup, filemode);
-        inputStream.close();
-    }
-
-    public static void createTarDir(TarArchiveOutputStream data, String filename, final String ownerUser, final String ownerGroup, Integer filemode) throws IOException {
-        TarArchiveEntry dataEntry = createTarArchiveEntry(filename, ownerUser, ownerGroup, filemode, null);
-        data.putArchiveEntry(dataEntry);
-        data.closeArchiveEntry();
-    }
-
-    public static void createTarParentDirs(HashSet<String> dataParentDirs, TarArchiveOutputStream data, String filename
+    public static void createParentDirs(HashSet<String> dataParentDirs, TarArchiveOutputStream data, String filename
             , final String ownerUser, final String ownerGroup, final Integer filemode) throws IOException {
         StringTokenizer tok = new StringTokenizer(filename, File.separator);
         StringBuilder parentDir = new StringBuilder();
@@ -96,7 +109,7 @@ public class ArchiveHelper {
             }
             final String dir = parentDir.toString();
             if (!dataParentDirs.contains(dir)) {
-                createTarDir(data, dir, ownerUser, ownerGroup, filemode);
+                createDir(data, dir, ownerUser, ownerGroup, filemode);
                 dataParentDirs.add(dir);
             }
         }

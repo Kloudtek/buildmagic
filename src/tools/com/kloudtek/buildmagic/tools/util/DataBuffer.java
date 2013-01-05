@@ -68,8 +68,11 @@ public class DataBuffer extends OutputStream {
         prepareToCopy();
         if (tmpFile != null) {
             final FileInputStream is = new FileInputStream(tmpFile);
-            IOUtils.copy(is, stream);
-            is.close();
+            try {
+                IOUtils.copy(is, stream);
+            } finally {
+                IOUtils.closeQuietly(is);
+            }
         } else {
             stream.write(((ByteArrayOutputStream) buffer).toByteArray());
         }
@@ -81,7 +84,7 @@ public class DataBuffer extends OutputStream {
      * @return InputStream to the buffered data.
      * @throws IOException If an I/O error occurs while accessing the data
      */
-    public InputStream getDataInputStream() throws IOException {
+    public InputStream createDataInputStream() throws IOException {
         prepareToCopy();
         if (tmpFile != null) {
             return new FileInputStream(tmpFile);

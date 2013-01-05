@@ -59,9 +59,10 @@
     </macrodef>
 
     <target name="simple-createdeb">
-        <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0">
-            <tarfileset prefix="/opt/bmtest" dir="${src}" username="${user.name}" group="${user.name}" filemode="640"
-                        dirmode="700"/>
+        <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0" maintName="Some Maintenair"
+             maintEmail="asdfads@asffads.com"
+             license="GPL-2">
+            <tarfileset prefix="/opt/bmtest" dir="${src}"/>
             <description short="Test jar created to ${dest}"><![CDATA[This is a rather long description that happily
 describes what it's doing
 next a single empty line
@@ -70,7 +71,6 @@ and after this two empty lines
 
 Dest is ${dest}]]></description>
             <control>
-                <field name="Maintainer" value="Me &lt;myself@moi&gt;"/>
                 <fileset dir="${src}" includes="*.properties"/>
             </control>
         </deb>

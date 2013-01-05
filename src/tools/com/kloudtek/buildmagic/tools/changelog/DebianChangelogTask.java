@@ -99,11 +99,12 @@ public class DebianChangelogTask extends Task {
             if (changes.isEmpty()) {
                 changes.add("Release " + version);
             }
-            changelog.append(projectName + " (" + version + ") " + distributions + "; urgency=" + urgency + "\n\n");
+            changelog.append(projectName).append(" (").append(version).append(") ").append(distributions)
+                    .append("; urgency=").append(urgency).append("\n\n");
             for (String change : changes) {
                 changelog.append("  * ").append(change).append("\n\n");
             }
-            final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ"); // day-of-week, dd month yyyy hh:mm:ss +zzzz
+            final SimpleDateFormat format = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss ZZZZZ");
             changelog.append(" -- ").append(maintainerName).append(" <").append(maintainerEmail).append(">  ")
                     .append(format.format(new Date())).append("\n");
             FileUtils.writeStringToFile(dest, changelog.toString());
