@@ -12,6 +12,7 @@ import org.apache.tools.ant.types.ArchiveFileSet;
 import org.apache.tools.ant.types.Resource;
 import org.apache.tools.ant.types.ResourceCollection;
 import org.apache.tools.ant.types.TarFileSet;
+import org.apache.tools.ant.types.resources.FileResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -146,7 +147,7 @@ public class TarArchive {
                         dirmode = tarSet.getDirMode(project) ^ UnixStat.DIR_FLAG;
                     }
                 } else if (rsCol instanceof DebSymlink) {
-                    createSymlink(filename, ((DebSymlink) rsCol).getResource());
+                    createSymlink(((FileResource) rs).getFile().getPath(), ((DebSymlink) rsCol).getTarget());
                     continue;
                 } else {
                     user = null;

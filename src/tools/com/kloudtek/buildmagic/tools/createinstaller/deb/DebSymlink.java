@@ -8,7 +8,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.Path;
 
 public class DebSymlink extends Path {
-    private String resource;
+    private String target;
 
     public DebSymlink(Project p, String path) {
         super(p, path);
@@ -18,11 +18,11 @@ public class DebSymlink extends Path {
         super(project);
     }
 
-    public String getResource() {
-        return resource;
+    public String getTarget() {
+        return target;
     }
 
-    public void setResource(String resource) {
-        this.resource = resource;
+    public void setTarget(String target) {
+        this.target = target;
     }
 }
