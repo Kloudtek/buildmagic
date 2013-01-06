@@ -1,21 +1,15 @@
 <project name="buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant" xmlns:bmt="antlib:com.kloudtek.buildmagic.tools">
     <property name="build.dir" value="${basedir}/_build"/>
     <property name="deps.dir" value="${basedir}/_deps"/>
-    <property name="reports.dir" value="${build.dir}/_deps"/>
+    <property name="reports.dir" value="${build.dir}/reports"/>
     <property name="artifacts.dir" value="${build.dir}/artifacts"/>
     <property name="version" value="0.0~dev"/>
     <available property="ivy.found" file="${build.dir}/ivy/ivy.jar"/>
 
-    <target name="retrieve-ivy" unless="ivy.found">
-        <mkdir dir="${build.dir}/ivy"/>
-        <get src="http://repo1.maven.org/maven2/org/apache/ivy/ivy/2.3.0-rc1/ivy-2.3.0-rc1.jar"
-             dest="${build.dir}/ivy/ivy.jar"/>
-    </target>
-
-    <target name="init-ivy" depends="retrieve-ivy">
+    <target name="init-ivy">
         <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" loaderref="ivyloader">
             <classpath>
-                <fileset dir="${build.dir}/ivy"/>
+                <fileset dir="lib"/>
             </classpath>
         </taskdef>
         <ivy:settings url="http://s3.amazonaws.com/ivy.kloudtek.com/ivysettings.xml"/>
@@ -70,7 +64,7 @@
     <target name="dist" depends="jars">
         <mkdir dir="${build.dir}/dist/lib"/>
         <copy todir="${build.dir}/dist/lib" flatten="true">
-            <fileset dir="${build.dir}/ivy" includes="*.jar"/>
+            <fileset dir="lib" includes="*.jar"/>
             <fileset dir="${artifacts.dir}" includes="*.jar" excludes="buildmagic-boostrap.jar"/>
             <fileset dir="${deps.dir}" includes="tools-jar/*.jar"/>
             <fileset dir="${deps.dir}" includes="core-jar/*.jar"/>

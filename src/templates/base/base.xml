@@ -38,6 +38,6 @@
 
     <property name="build.dir" value="${basedir}/_build"/>
     <property name="reports.dir" value="${build.dir}/reports"/>
-    <property name="artifacts.dir" value="${build.dir}/reports"/>
+    <property name="artifacts.dir" value="${build.dir}/artifacts"/>
     <property name="deps.dir" value="${basedir}/_deps"/>
 </project>

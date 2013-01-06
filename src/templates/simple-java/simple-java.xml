@@ -15,9 +15,9 @@
     <target name="jar" extensionOf="compile">
         <property name="javac.destdir" value="${build.dir}/classes"/>
         <property name="jar.name" value="${ant.project.name}"/>
-        <property name="jar.dest" value="${artifacts.dir}/${jar.name}"/>
-        <javac destfile="${jar.dest}" basedir="${javac.destdir}">
+        <property name="jar.dest" value="${artifacts.dir}/${jar.name}.jar"/>
+        <jar destfile="${jar.dest}" basedir="${javac.destdir}">
             <fileset dir="${javac.srcdir}" excludes="**/*.java"/>
-        </javac>
+        </jar>
     </target>
 </project>
