@@ -62,7 +62,8 @@
         <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0" maintName="Some Maintenair"
              maintEmail="asdfads@asffads.com"
              license="GPL-2">
-            <tarfileset prefix="/opt/bmtest" dir="${src}"/>
+            <tarfileset prefix="/opt/bmtest" dir="${src}" excludes="web.xml"/>
+            <tarfileset prefix="/opt/bmtest/bin" dir="${src}" includes="web.xml" filemode="0755" dirmode="0755"/>
             <description short="Test jar created to ${dest}"><![CDATA[This is a rather long description that happily
 describes what it's doing
 next a single empty line

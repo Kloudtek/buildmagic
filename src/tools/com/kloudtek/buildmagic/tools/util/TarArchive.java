@@ -6,6 +6,7 @@ package com.kloudtek.buildmagic.tools.util;
 
 import com.kloudtek.buildmagic.tools.createinstaller.deb.DebSymlink;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
+import org.apache.commons.compress.archivers.zip.UnixStat;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.types.ArchiveFileSet;
 import org.apache.tools.ant.types.Resource;
@@ -97,6 +98,18 @@ public class TarArchive {
         files.add(filename);
         ArchiveHelper.createDir(stream, filename, owner, group, filemode);
     }
+//
+//    public static void main(String[] args) throws IOException {
+//        FileOutputStream file = new FileOutputStream("_tmp/test.tar");
+//        TarArchiveOutputStream s = new TarArchiveOutputStream(file);
+//        s.setLongFileMode(TarArchiveOutputStream.LONGFILE_GNU);
+//        s.setLongFileMode(TarArchiveOutputStream.BIGNUMBER_POSIX);
+//        TarArchiveEntry dir = new TarArchiveEntry("test", TarConstants.LF_DIR);
+//        dir.setMode(484);
+//        s.putArchiveEntry(dir);
+//        s.closeArchiveEntry();
+//        s.close();
+//    }
 
     public void write(Collection<ResourceCollection> collections) throws IOException {
         for (final ResourceCollection rsCol : collections) {
@@ -126,8 +139,12 @@ public class TarArchive {
                     if (group != null && group.length() == 0) {
                         group = null;
                     }
-                    filemode = tarSet.getFileMode(project);
-                    dirmode = tarSet.getDirMode(project);
+                    if (tarSet.hasFileModeBeenSet()) {
+                        filemode = tarSet.getFileMode(project) ^ UnixStat.FILE_FLAG;
+                    }
+                    if (tarSet.hasDirModeBeenSet()) {
+                        dirmode = tarSet.getDirMode(project) ^ UnixStat.DIR_FLAG;
+                    }
                 } else if (rsCol instanceof DebSymlink) {
                     createSymlink(filename, ((DebSymlink) rsCol).getResource());
                     continue;
