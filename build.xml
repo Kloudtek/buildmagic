@@ -62,19 +62,25 @@
     </target>
 
     <target name="dist" depends="jars">
-        <mkdir dir="${build.dir}/dist/lib"/>
-        <copy todir="${build.dir}/dist/lib" flatten="true">
+        <mkdir dir="${build.dir}/dist/buildmagic/lib"/>
+        <copy todir="${build.dir}/dist/buildmagic/lib" flatten="true">
             <fileset dir="lib" includes="*.jar"/>
             <fileset dir="${artifacts.dir}" includes="*.jar" excludes="buildmagic-boostrap.jar"/>
             <fileset dir="${deps.dir}" includes="tools-jar/*.jar"/>
             <fileset dir="${deps.dir}" includes="core-jar/*.jar"/>
         </copy>
-        <copy file="${artifacts.dir}/buildmagic-boostrap.jar" todir="${build.dir}/dist"/>
-        <mkdir dir="${build.dir}/dist/templates"/>
-        <copy todir="${build.dir}/dist/templates">
+        <copy file="${artifacts.dir}/buildmagic-boostrap.jar" todir="${build.dir}/dist/buildmagic"/>
+        <mkdir dir="${build.dir}/dist/buildmagic/templates"/>
+        <copy todir="${build.dir}/dist/buildmagic/templates">
             <fileset dir="${basedir}/src/templates"/>
         </copy>
         <zip destfile="${artifacts.dir}/buildmagic.zip" basedir="${build.dir}/dist"/>
+        <tar destfile="${artifacts.dir}/buildmagic.tbz2"
+             compression="bzip2" basedir="${build.dir}/dist"/>
+        <concat destfile="${artifacts.dir}/buildmagic-install.sh" binary="true">
+            <path location="${basedir}/src/installer/selfextract.sh"/>
+            <path location="${artifacts.dir}/buildmagic.tbz2"/>
+        </concat>
     </target>
 
     <target name="deb" depends="dist">
@@ -85,7 +91,7 @@
         </taskdef>
         <bmt:deb destfile="${artifacts.dir}/buildmagic.deb" name="buildmagic" version="${version}" section="development"
                  priority="extra" maintName="KloudTek Ltd" maintEmail="info@kloudtek.com" license="GPL-3">
-            <tarfileset prefix="/usr/share/buildmagic" dir="${build.dir}/dist"/>
+            <tarfileset prefix="/usr/share/buildmagic" dir="${build.dir}/dist/buildmagic"/>
             <description
                     short="Powerful library for ant providing templates and new tasks">
                 <![CDATA[This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.]]></description>
