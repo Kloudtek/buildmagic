@@ -97,4 +97,6 @@
                 <![CDATA[This is an extension to the ant build system designed to facilitate the creation and distribution of re-usable build templates, as well as providing powerful new tasks.]]></description>
         </bmt:deb>
     </target>
+
+    <target name="artifacts" depends="dist,deb"/>
 </project>
