@@ -86,7 +86,7 @@
     <target name="deb" depends="dist">
         <taskdef uri="antlib:com.kloudtek.buildmagic.tools">
             <classpath>
-                <fileset dir="${build.dir}/dist/lib"/>
+                <fileset dir="${build.dir}/dist/buildmagic/lib"/>
             </classpath>
         </taskdef>
         <bmt:deb destfile="${artifacts.dir}/buildmagic.deb" name="buildmagic" version="${version}" section="development"
