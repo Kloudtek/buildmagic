@@ -18,7 +18,7 @@ You could then generate the jar by just calling `ant artifacts`.
 
 It also includes ivy by default, which you can easily integrate into your build using it's template.
 
-```
+```xml
 <project name='myproject' xmlns:bm="antlib:com.kloudtek.buildmagic">
   <bm:template name="simple-java"/>
   <bm:template name="ivy"/>
