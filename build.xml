@@ -32,14 +32,14 @@
     </target>
 
     <target name="jars" depends="classes">
-        <jar destfile="${artifacts.dir}/buildmagic.jar">
+        <jar destfile="${artifacts.dir}/buildmagic-all.jar">
             <fileset dir="${build.dir}/classes"/>
             <fileset dir="${basedir}/src/java" excludes="**/*.java"/>
             <zipfileset src="lib/ivy-2.3.0.jar"/>
             <zipfileset src="_deps/core-jar/ant-contrib.jar"/>
             <zipfileset src="_deps/core-jar/jsch.jar"/>
         </jar>
-        <jar destfile="${artifacts.dir}/buildmagic-nodeps.jar">
+        <jar destfile="${artifacts.dir}/buildmagic.jar">
             <fileset dir="${build.dir}/classes"/>
             <fileset dir="src/java" excludes="**/*.java"/>
         </jar>
@@ -50,7 +50,7 @@
         <copy todir="${build.dir}/dist" flatten="true">
             <fileset dir="lib" includes="*.jar"/>
             <fileset dir="_deps/core-jar" includes="*.jar"/>
-            <fileset dir="${artifacts.dir}" includes="buildmagic-nodeps.jar"/>
+            <fileset dir="${artifacts.dir}" includes="buildmagic.jar"/>
         </copy>
         <zip destfile="${artifacts.dir}/buildmagic.zip" basedir="${build.dir}/dist"/>
     </target>
