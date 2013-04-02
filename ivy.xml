@@ -12,7 +12,7 @@
     </configurations>
 
     <publications>
-        <artifact name="buildmagic-nodeps" conf="core"/>
+        <artifact name="buildmagic-all" conf="core"/>
         <artifact name="buildmagic" conf="core"/>
     </publications>
 
@@ -22,20 +22,5 @@
         <dependency org="net.sourceforge" name="ant-contrib" rev="1.0b3" conf="core->default"/>
         <dependency org="com.jetbrains" name="annotations" rev="10eap1052" conf="build->default"/>
         <dependency org="org.easymock" name="easymock" rev="2.5.1" conf="build->default"/>
-
-
-        <!--
-        <dependency org="org.easymock" name="easymock-classext" rev="2.4" conf="build->default"/>
-        <dependency org="org.testng" name="testng" rev="5.10" conf="build->default"/>
--->
-
-        <!--
-        -->
-
-        <!--
-                <dependency org="org.apache" name="commons-io" rev="2.4" conf="tools->default"/>
-                <dependency org="org.apache" name="commons-compress" rev="1.4.1" conf="tools->default"/>
-                <dependency org="org.apache" name="xerces" rev="2.9.1" conf="tools->default"/>
-        -->
     </dependencies>
 </ivy-module>

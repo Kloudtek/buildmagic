@@ -30,7 +30,7 @@ you just need to run `ant deps publish`.
 
 ## Usage
 
-In order to use buildmagic, it's jar file (either buildmagic.jar which include all dependencies, or buildmagic-nodeps.jar
+In order to use buildmagic, it's jar file (either buildmagic-all.jar which include all dependencies, or buildmagic.jar
 and each individual dependency) should be loaded as an antlib.
 
 This could be done by using `ant -jar` command line, by having it the jars in the lib directory of your ant installation,

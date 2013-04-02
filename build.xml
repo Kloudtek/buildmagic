@@ -1,0 +1,56 @@
+<project name="buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant">
+    <property name="build.dir" value="${basedir}/_build"/>
+    <property name="deps.dir" value="${basedir}/_deps"/>
+    <property name="reports.dir" value="${build.dir}/reports"/>
+    <property name="artifacts.dir" value="${build.dir}/artifacts"/>
+    <property name="version" value="0.0~dev"/>
+    <available property="ivy.found" file="${build.dir}/ivy/ivy.jar"/>
+
+    <target name="init-ivy">
+        <taskdef resource="org/apache/ivy/ant/antlib.xml" uri="antlib:org.apache.ivy.ant" loaderref="ivyloader">
+            <classpath>
+                <fileset dir="lib"/>
+            </classpath>
+        </taskdef>
+        <ivy:settings url="http://s3.amazonaws.com/ivy.kloudtek.com/ivysettings.xml"/>
+    </target>
+
+    <target name="deps" depends="init-ivy">
+        <ivy:resolve/>
+        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
+        <ivy:report graph="false" todir="${reports.dir}/ivy"/>
+    </target>
+
+    <target name="classes">
+        <mkdir dir="${build.dir}/classes"/>
+        <javac destdir="${build.dir}/classes" srcdir="src/java"
+               debug="true">
+            <classpath>
+                <fileset dir="${deps.dir}" includes="**/*.jar"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="jars" depends="classes">
+        <jar destfile="${artifacts.dir}/buildmagic.jar">
+            <fileset dir="${build.dir}/classes"/>
+            <fileset dir="${basedir}/src/java" excludes="**/*.java"/>
+            <zipfileset dir="lib"/>
+            <zipfileset dir="_deps/core-jar"/>
+        </jar>
+        <jar destfile="${artifacts.dir}/buildmagic-nodeps.jar">
+            <fileset dir="${build.dir}/classes"/>
+            <fileset dir="src/java" excludes="**/*.java"/>
+        </jar>
+    </target>
+
+    <target name="dist" depends="jars">
+        <mkdir dir="${build.dir}/dist"/>
+        <copy todir="${build.dir}/dist" flatten="true">
+            <fileset dir="lib" includes="*.jar"/>
+            <fileset dir="_deps/core-jar" includes="*.jar"/>
+            <fileset dir="${artifacts.dir}" includes="buildmagic-nodeps.jar"/>
+        </copy>
+        <zip destfile="${artifacts.dir}/buildmagic.zip" basedir="${build.dir}/dist"/>
+    </target>
+</project>
