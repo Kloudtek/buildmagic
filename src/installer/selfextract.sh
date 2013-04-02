@@ -2,9 +2,9 @@
 echo "Installing BuildMagic"
 COUNT=`awk '/^__SOURCE__/ { print NR + 1; exit 0; }' $0`
 THIS=`pwd`/$0
+rm -rf /usr/share/buildmagic/*
 tail -n+$COUNT $THIS | tar -C /usr/share -xj
 if [ -d '/usr/share/ant/lib/' ]; then
-    echo "Found ant at /usr/share/ant/lib: creating symlinks to jars"
     if [ ! -e '/usr/share/ant/lib/ant-contrib.jar' ]; then
         echo "Creating symlink /usr/share/ant/lib/ant-contrib.jar"
         ln -s /usr/share/buildmagic/ant-contrib.jar /usr/share/ant/lib/ant-contrib.jar
