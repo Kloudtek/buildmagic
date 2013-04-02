@@ -13,7 +13,6 @@
     <target name="init-ivy">
         <taskdef uri="antlib:com.kloudtek.buildmagic.tools"/>
         <taskdef uri="antlib:org.apache.ivy.ant" loaderref="buildmagic.loader.ivy"/>
-        <echo>WTF--------------------------------</echo>
         <c:if>
             <isset property="ivysettings.url"/>
             <then>
