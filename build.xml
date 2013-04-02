@@ -52,6 +52,19 @@
             <fileset dir="_deps/core-jar" includes="*.jar"/>
             <fileset dir="${artifacts.dir}" includes="buildmagic.jar"/>
         </copy>
-        <zip destfile="${artifacts.dir}/buildmagic.zip" basedir="${build.dir}/dist"/>
+        <zip destfile="${artifacts.dir}/buildmagic.zip">
+            <zipfileset dir="${build.dir}/dist" prefix="buildmagic"/>
+        </zip>
+        <tar destfile="${artifacts.dir}/buildmagic.tar">
+            <zipfileset dir="${build.dir}/dist" prefix="buildmagic"/>
+        </tar>
+        <bzip2 src="${artifacts.dir}/buildmagic.tar" destfile="${artifacts.dir}/buildmagic.tar.bz2"/>
+    </target>
+
+    <target name="installer" depends="dist">
+        <concat binary="true" destfile="${artifacts.dir}/buildmagic-installer.sh">
+            <path location="src/installer/selfextract.sh"/>
+            <path location="${artifacts.dir}/buildmagic.tar.bz2"/>
+        </concat>
     </target>
 </project>
