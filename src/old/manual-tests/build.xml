@@ -1,0 +1,22 @@
+<!--
+  ~ Copyright (c) 2013 KloudTek Ltd
+  -->
+
+<project name="test" xmlns:bm="antlib:com.kloudtek.buildmagic">
+    <ant dir="../.." target="dist" inheritall="false" inheritrefs="false"/>
+    <taskdef uri="antlib:com.kloudtek.buildmagic">
+        <classpath>
+            <path location="../../_build/dist/buildmagic-boostrap.jar"/>
+        </classpath>
+    </taskdef>
+    <property name="buildmagic.home" value="../../_build/dist"/>
+    <bm:init/>
+    <bm:template name="simple-java"/>
+    <bm:template name="base"/>
+    <bm:template name="ivy"/>
+    <target name="test">
+        <antcall target="clean"/>
+        <antcall target="retrieve-deps"/>
+        <antcall target="artifacts"/>
+    </target>
+</project>

@@ -1,0 +1,8 @@
+<!--
+  ~ Copyright (c) 2013 KloudTek Ltd
+  -->
+
+<antlib>
+    <typedef classname="com.kloudtek.buildmagic.InitTask" name='init'/>
+    <typedef classname="com.kloudtek.buildmagic.TemplateTask" name='template'/>
+</antlib>

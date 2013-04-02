@@ -3,28 +3,10 @@
   <component name="NewModuleRootManager" inherit-compiler-output="true">
     <exclude-output />
     <content url="file://$MODULE_DIR$">
-      <sourceFolder url="file://$MODULE_DIR$/src/core" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/bootstrap" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/src/test" isTestSource="true" />
-      <sourceFolder url="file://$MODULE_DIR$/src/tools" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/old/src/java" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$/old/src/test" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/src/java" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="module-library">
-      <library name="tools">
-        <CLASSES>
-          <root url="file://$MODULE_DIR$/_deps/tools-jar" />
-          <root url="file://$MODULE_DIR$/_deps/tools-jar" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES>
-          <root url="jar://$USER_HOME$/Downloads/commons-compress-1.4.1/commons-compress-sources-1.4.1.jar!/" />
-        </SOURCES>
-        <jarDirectory url="file://$MODULE_DIR$/_deps/tools-jar" recursive="false" />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library">
       <library name="build">
         <CLASSES>
@@ -34,6 +16,17 @@
         <JAVADOC />
         <SOURCES />
         <jarDirectory url="file://$MODULE_DIR$/_deps/build-jar" recursive="false" />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library" exported="">
+      <library name="core">
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/_deps/core-jar/ant-contrib.jar!/" />
+          <root url="jar://$MODULE_DIR$/_deps/core-jar/jsch.jar!/" />
+          <root url="jar://$MODULE_DIR$/lib/ivy-2.3.0-rc2.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
       </library>
     </orderEntry>
   </component>

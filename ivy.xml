@@ -1,5 +1,5 @@
 <!--
-  ~ Copyright (c) $today.year.jGuild International Ltd
+  ~ Copyright (c) 2013 KloudTek Ltd
   -->
 <ivy-module version="2.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
             xsi:noNamespaceSchemaLocation="http://ant.apache.org/ivy/schemas/ivy.xsd">
@@ -12,23 +12,30 @@
     </configurations>
 
     <publications>
-        <artifact name="buildmagic-bootstrap" conf="core"/>
-        <artifact name="buildmagic-core" conf="core"/>
+        <artifact name="buildmagic-nodeps" conf="core"/>
+        <artifact name="buildmagic" conf="core"/>
     </publications>
 
     <dependencies>
+        <dependency org="com.jcraft" name="jsch" rev="0.1.43" conf="core->default"/>
+        <dependency org="org.apache" name="ant" rev="1.8.1" conf="build->default"/>
+        <dependency org="net.sourceforge" name="ant-contrib" rev="1.0b3" conf="core->default"/>
         <dependency org="com.jetbrains" name="annotations" rev="10eap1052" conf="build->default"/>
-        <dependency org="org.apache" name="ant" rev="1.7.1" conf="build->default"/>
         <dependency org="org.easymock" name="easymock" rev="2.5.1" conf="build->default"/>
+
+
+        <!--
         <dependency org="org.easymock" name="easymock-classext" rev="2.4" conf="build->default"/>
         <dependency org="org.testng" name="testng" rev="5.10" conf="build->default"/>
+-->
 
-        <dependency org="net.sourceforge" name="ant-contrib" rev="1.0b3" conf="core->default"/>
-        <dependency org="com.jcraft" name="jsch" rev="0.1.43" conf="core->default"/>
+        <!--
+        -->
 
-        <dependency org="org.apache" name="ant" rev="1.8.1" conf="build->default"/>
-        <dependency org="org.apache" name="commons-io" rev="2.4" conf="tools->default"/>
-        <dependency org="org.apache" name="commons-compress" rev="1.4.1" conf="tools->default"/>
-        <dependency org="org.apache" name="xerces" rev="2.9.1" conf="tools->default"/>
+        <!--
+                <dependency org="org.apache" name="commons-io" rev="2.4" conf="tools->default"/>
+                <dependency org="org.apache" name="commons-compress" rev="1.4.1" conf="tools->default"/>
+                <dependency org="org.apache" name="xerces" rev="2.9.1" conf="tools->default"/>
+        -->
     </dependencies>
 </ivy-module>

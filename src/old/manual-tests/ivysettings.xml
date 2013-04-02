@@ -1,0 +1,18 @@
+<!--
+  ~ Copyright (c) 2013 KloudTek Ltd
+  -->
+
+<ivysettings>
+    <settings defaultResolver="all"/>
+
+    <resolvers>
+        <chain name="all">
+            <url name="public" m2compatible="true">
+                <ivy
+                        pattern="http://s3.amazonaws.com/ivy.kloudtek.com/[organisation]/[module]/[revision]/[artifact]-ivy-[revision].[ext]"/>
+                <artifact
+                        pattern="http://s3.amazonaws.com/ivy.kloudtek.com/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"/>
+            </url>
+        </chain>
+    </resolvers>
+</ivysettings>

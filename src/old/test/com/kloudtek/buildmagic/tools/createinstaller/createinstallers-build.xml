@@ -1,0 +1,87 @@
+<!--
+  ~ Copyright (c) 2013 KloudTek Ltd
+  -->
+
+<project name="PackageDeb Tests">
+    <taskdef name="deb" classname="com.kloudtek.buildmagic.tools.createinstaller.deb.CreateDebTask"/>
+
+    <macrodef name="setup-dpkg">
+        <attribute name="installdir"/>
+        <sequential>
+            <mkdir dir="@{installdir}/var/lib/dpkg/updates"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/triggers"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/info"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/parts"/>
+            <mkdir dir="@{installdir}/var/lib/dpkg/tmp.ci"/>
+            <touch file="@{installdir}/var/lib/dpkg/available"/>
+            <touch file="@{installdir}/var/lib/dpkg/status"/>
+            <touch file="@{installdir}/var/lib/dpkg/triggers/File"/>
+            <touch file="@{installdir}/var/lib/dpkg/triggers/Unincorp"/>
+            <touch file="@{installdir}/var/lib/dpkg/diversions"/>
+            <touch file="@{installdir}/var/lib/dpkg/statoverride"/>
+            <echo file="@{installdir}/var/lib/dpkg/triggers/pysupport">python-support</echo>
+            <echo file="@{installdir}/var/lib/dpkg/triggers/ldconfig">libc-bin</echo>
+            <echo file="@{installdir}/var/lib/dpkg/triggers/cmethopt">apt apt</echo>
+        </sequential>
+    </macrodef>
+    <macrodef name="dpkg">
+        <attribute name="installdir"/>
+        <attribute name="deb"/>
+        <sequential>
+            <setup-dpkg installdir='@{installdir}'/>
+            <exec executable="dpkg" failonerror="true">
+                <env key="PERL_DL_NONLAZY" value="true"/>
+                <env key="DEBIAN_FRONTEND" value="gnome"/>
+                <env key="DEBCONF_DEBUG" value="developer"/>
+                <arg value="--log=@{installdir}/install.log"/>
+                <arg value="--force-all"/>
+                <arg value="--root=@{installdir}"/>
+                <arg value="--instdir=@{installdir}"/>
+                <arg value="--install"/>
+                <arg value="@{deb}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <macrodef name="su-dpkg">
+        <attribute name="installdir"/>
+        <attribute name="deb"/>
+        <sequential>
+            <setup-dpkg installdir='@{installdir}'/>
+            <exec executable="gksu" failonerror="true">
+                <env key="PERL_DL_NONLAZY" value="true"/>
+                <env key="DEBCONF_DEBUG" value="developer"/>
+                <env key="DEBIAN_FRONTEND" value="gnome"/>
+                <arg value="-k"/>
+                <arg value="dpkg --install @{deb}"/>
+            </exec>
+        </sequential>
+    </macrodef>
+
+    <target name="simple-createdeb">
+        <deb destfile="${workspace}/bmtest.deb" name="bmtest" version="1.0" maintName="Some Maintenair"
+             maintEmail="asdfads@asffads.com"
+             license="GPL-2">
+            <tarfileset prefix="/opt/bmtest" dir="${src}" excludes="web.xml"/>
+            <tarfileset prefix="/opt/bmtest/bin" dir="${src}" includes="web.xml" filemode="0755" dirmode="0755"/>
+            <symlink path="/opt/bmtest/bin/web" target="web.xml"/>
+            <description short="Test jar created to ${dest}"><![CDATA[This is a rather long description that happily
+describes what it's doing
+next a single empty line
+
+and after this two empty lines
+
+Dest is ${dest}]]></description>
+            <control>
+                <fileset dir="${src}" includes="*.properties"/>
+            </control>
+        </deb>
+        <dpkg installdir="${installdir}" deb="${workspace}/bmtest.deb"/>
+    </target>
+
+    <target name="uninstall">
+        <exec executable="gksu" failonerror="true">
+            <arg value="apt-get -y purge bmtest"/>
+        </exec>
+    </target>
+</project>

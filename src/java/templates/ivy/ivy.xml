@@ -1,0 +1,90 @@
+<!--
+  ~ Copyright (c) 2013 KloudTek Ltd
+  -->
+
+<project name="bmivy" xmlns:bm="antlib:com.kloudtek.buildmagic" xmlns:ivy="antlib:org.apache.ivy.ant"
+         xmlns:c="antlib:net.sf.antcontrib">
+    <bm:template name="base"/>
+
+    <target name="clean-deps">
+        <delete dir="${deps.dir}"/>
+    </target>
+
+    <target name="init-ivy">
+        <taskdef uri="antlib:com.kloudtek.buildmagic.tools"/>
+        <taskdef uri="antlib:org.apache.ivy.ant" loaderref="buildmagic.loader.ivy"/>
+        <echo>WTF--------------------------------</echo>
+        <c:if>
+            <isset property="ivysettings.url"/>
+            <then>
+                <echo>Loading Ivy Settings file: ${ivysettings.url}</echo>
+                <ivy:settings url="${ivysettings.url}"/>
+            </then>
+            <elseif>
+                <isset property="ivysettings.file"/>
+                <then>
+                    <echo>Loading Ivy Settings file: ${ivysettings.file}</echo>
+                    <ivy:settings file="${ivysettings.file}"/>
+                </then>
+            </elseif>
+            <elseif>
+                <available file="ivysettings.xml"/>
+                <then>
+                    <echo>Loading Ivy Settings file: ${user.home}/.vysettings.xml</echo>
+                    <ivy:settings file="ivysettings.xml"/>
+                </then>
+            </elseif>
+            <elseif>
+                <available file="${user.home}/.ivysettings.xml"/>
+                <then>
+                    <echo>Loading Ivy Settings file: ${user.home}/.ivysettings.xml</echo>
+                    <ivy:settings file="${user.home}/.ivysettings.xml"/>
+                </then>
+            </elseif>
+            <else>
+                <ivy:settings/>
+            </else>
+        </c:if>
+        <ivy:info/>
+        <property name="projectname" value="${ivy.module}"/>
+    </target>
+
+    <target name="add-deps-to-compile-cp" extensionOf="init">
+        <augment id="buildmagic.classpath.compile">
+            <fileset dir="${deps.dir}" includes="**/*.jar"/>
+        </augment>
+    </target>
+
+    <target name="deps" depends="init,init-ivy">
+        <ivy:resolve/>
+        <ivy:retrieve pattern="${deps.dir}/[conf]-[type]/[artifact].[ext]"/>
+        <ivy:report graph="false" todir="${reports.dir}/ivy"/>
+    </target>
+
+    <target name="resolve-ivy-version" depends="init-ivy" if="buildmagic.ivy.resolve-ivy-version" extensionOf="init">
+        <c:if>
+            <not>
+                <isset property="version"/>
+            </not>
+            <then>
+                <ivy:buildnumber organisation="${ivy.organisation}" module="${ivy.module}" default="${ivy.revision}"/>
+                <property name="version" value="${ivy.new.revision}"/>
+            </then>
+        </c:if>
+        <echo>Ivy New Revision: ${version}</echo>
+        <c:if>
+            <isset property="ivy.status"/>
+            <then>
+                <property name="reltype" value="${ivy.status}"/>
+            </then>
+        </c:if>
+        <echo>Ivy Status: ${reltype}</echo>
+    </target>
+
+    <target name="publish-ivy" depends="init-ivy,resolve-ivy-version" extensionOf="publish">
+        <property name="buildmagic.ivy.publisher" value="default"/>
+        <ivy:publish resolver="${buildmagic.ivy.publisher}" pubrevision="${version}" status="${reltype}"
+                     artifactspattern="${build.dir}/artifacts/[artifact].[ext]" update="true"
+                     forcedeliver="true"/>
+    </target>
+</project>
