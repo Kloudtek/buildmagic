@@ -28,8 +28,8 @@
     <target name="classes">
         <mkdir dir="${build.dir}/classes"/>
         <javac destdir="${build.dir}/classes" srcdir="src/java"
-               debug="true">
-            <classpath>
+               debug="true" target="1.6" source="1.6">
+        <classpath>
                 <fileset dir="${deps.dir}" includes="**/*.jar"/>
             </classpath>
         </javac>
