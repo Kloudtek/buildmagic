@@ -9,7 +9,9 @@
         <property name="javac.srcdir" value="${basedir}/src/java"/>
         <property name="javac.destdir" value="${build.dir}/classes"/>
         <mkdir dir="${build.dir}/classes"/>
-        <javac destdir="${javac.destdir}" srcdir="${javac.srcdir}" classpathref="buildmagic.classpath.compile"/>
+        <javac destdir="${javac.destdir}"
+               srcdir="${javac.srcdir}"
+               classpathref="buildmagic.classpath.compile"/>
     </target>
 
     <target name="jar" extensionOf="artifacts">

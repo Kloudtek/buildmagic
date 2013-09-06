@@ -18,6 +18,9 @@ if [ -d '/usr/share/ant/lib/' ]; then
         ln -s /usr/share/buildmagic/ivy-2.3.0.jar /usr/share/ant/lib/ivy.jar
     fi
 fi
+echo >/usr/bin/buildmagic #!/bin/bash
+echo >>/usr/bin/buildmagic java -cp /usr/share/buildmagic/buildmagic.jar com.kloudtek.buildmagic.Cli \$@
+chmod +x /usr/bin/buildmagic
 echo "Finished"
 exit 0
 __SOURCE__
